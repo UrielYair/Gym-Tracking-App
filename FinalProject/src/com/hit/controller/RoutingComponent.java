@@ -22,7 +22,6 @@ public class RoutingComponent extends HttpServlet {
 	 */
 	public RoutingComponent() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -31,14 +30,16 @@ public class RoutingComponent extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String path = request.getPathInfo();
 		// response.getWriter().append(path);
 
 		String[] parts = path.split("/");
-		if (parts.length >= 3) {
+		if (parts.length<3) {
+			response.getWriter().append("ERROR: Wrong URL");
+		}
+		else{
 			String controllerName = parts[1];
 			String actionName = parts[2];
 			String strAfterAction = null;
@@ -54,14 +55,10 @@ public class RoutingComponent extends HttpServlet {
 					
 					
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		else
-		{
-			response.getWriter().append("ERROR: Wrong URL");
-		}
+		
 	}
 
 	/**
@@ -70,7 +67,6 @@ public class RoutingComponent extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
