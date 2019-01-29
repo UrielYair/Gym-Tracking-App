@@ -25,39 +25,39 @@ public class UserController {
 		String id = request.getParameter("userId");
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
-		if (id.chars().allMatch(Character::isDigit) && userName != "" && password != "") {
-			Integer userId = Integer.parseInt(id);
-
-			// writer.println(userId);
-			// writer.println(userName);
-			// writer.println(password);
-
-			HibernateGymDAO dao = HibernateGymDAO.getInstance();
-
-			try {
-				User user = dao.getUser(userId);
-				if (user == null) {
-					if (dao.addUser(new User(userId, userName, password))) {
-						// return success
-
-						writer.println("registration completed successfully");
-					} else {
-						// return action fail
-						writer.println("registration fail");
-					}
-				} else {
-					// return that user id is taken
-					writer.println("this id is already taken!");
-				}
-			} catch (UserDBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-
-			writer.println("Worng input");
+		
+		if (!(id.chars().allMatch(Character::isDigit) && userName != "" && password != "")) {
+			writer.println("Wrong input.");
+			return;
 		}
+		Integer userId = Integer.parseInt(id);
 
+		// writer.println(userId);
+		// writer.println(userName);
+		// writer.println(password);
+
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+
+		try {
+			User user = dao.getUser(userId);
+			if (user == null) {
+				if (dao.addUser(new User(userId, userName, password))) {
+					// return success
+
+					writer.println("registration completed successfully");
+				} else {
+					// return action fail
+					writer.println("registration fail");
+				}
+			} 
+			else {
+				// return that user id is taken
+				writer.println("this id is already taken!");
+			}
+		} catch (UserDBException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
@@ -66,36 +66,40 @@ public class UserController {
 
 		String id = request.getParameter("userId");
 		String password = request.getParameter("password");
-		if (id.chars().allMatch(Character::isDigit) && password != "") {
-			Integer userId = Integer.parseInt(id);
-
-			// writer.println(userId);
-			// writer.println(password);
-
-			HibernateGymDAO dao = HibernateGymDAO.getInstance();
-
-			try {
-				User user = dao.getUser(userId);
-
-				if (user != null) {
-					if (user.getPassword().equals(password)) {
-						HttpSession session = request.getSession();
-						session.setAttribute("id", userId);
-						session.setMaxInactiveInterval(300); // 5 min timeout - 300 sec
-						writer.println("Login successfully");
-					} else {
-						writer.println("incorrect password");
-					}
-				} else {
-					writer.println("User dosen't exist");
-				}
-			} catch (UserDBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			writer.println("Worng input");
+		
+		if (!(id.chars().allMatch(Character::isDigit) && password != "")) {
+				writer.println("Worng input");
+				return;
 		}
+				
+		Integer userId = Integer.parseInt(id);
+
+		// writer.println(userId);
+		// writer.println(password);
+
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+
+		try {
+			User user = dao.getUser(userId);
+
+			if (user ==  null) {
+				writer.println("User dosen't exist");
+				return;
+			}
+			
+			if (user.getPassword().equals(password)) {
+				HttpSession session = request.getSession();
+				session.setAttribute("id", userId);
+				session.setMaxInactiveInterval(300); // 5 min timeout - 300 sec
+				writer.println("Login successfully");
+			} else {
+				writer.println("incorrect password");
+			}
+			 
+		} catch (UserDBException e) {
+			e.printStackTrace();
+		}
+		 
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
@@ -116,14 +120,14 @@ public class UserController {
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute("id") != null) { // check if user connected to the system
+		if (session.getAttribute("id") != null) { 
+			// check if user connected to the system
 			Integer id = (Integer) session.getAttribute("id");
 			
 			HibernateGymDAO dao = HibernateGymDAO.getInstance();
 			try {
 				dao.deleteUser(id);
 			} catch (UserDBException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
