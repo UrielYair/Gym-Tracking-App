@@ -24,7 +24,7 @@ public class HibernateGymDAO implements IGymDAO {
 
 	@Override
 	public boolean activityExist(Activity activity) throws ActivityDBException {
-		if(this.gymDAO.getActivity(activity.getId().getId(), activity.getId().getName()) == null)
+		if(getInstance().getActivity(activity.getId().getId(), activity.getId().getName()) == null)
 		{
 			return false;
 		}
@@ -39,7 +39,7 @@ public class HibernateGymDAO implements IGymDAO {
 		Session session = (Session) factory.openSession();
 		((org.hibernate.Session) session).beginTransaction();
 
-		if(this.gymDAO.activityExist(activity))
+		if(getInstance().activityExist(activity))
 		{
 			return false;
 		}
@@ -101,7 +101,7 @@ public class HibernateGymDAO implements IGymDAO {
 
 	@Override
 	public boolean userExist(User user) throws UserDBException {
-		if(this.gymDAO.getUser(user.getId()) == null)
+		if(getInstance().getUser(user.getId()) == null)
 		{
 			return false;
 		}
@@ -116,7 +116,7 @@ public class HibernateGymDAO implements IGymDAO {
 		Session session = (Session) factory.openSession();
 		((org.hibernate.Session) session).beginTransaction();
 
-		if(this.gymDAO.userExist(user))
+		if(getInstance().userExist(user))
 		{
 			return false;
 		}
