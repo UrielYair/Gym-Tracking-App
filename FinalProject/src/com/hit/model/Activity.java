@@ -16,7 +16,7 @@ public class Activity{
 	
 	@Id
 	@Column(name = "userId", length=10, nullable=false, unique=true)
-	private int id;
+	private Integer id;
 	@Column(name = "user_name", length=20, nullable=false)
 	private String userName;
 	@Column(name = "exercise_name", length=20, nullable=false)
@@ -24,9 +24,9 @@ public class Activity{
 	@Column(name = "workout_date", length=20, nullable=false)
 	private Date workoutDate;
 	@Column(name = "amount_of_sets", length=2, nullable=true)
-	private int amountOfSets;
+	private Integer amountOfSets;
 	@Column(name = "amount_of_repeatition", length=2, nullable=true)
-	private int amountOfRepeatition;
+	private Integer amountOfRepeatition;
 	@Column(name = "weights", precision=2, nullable=true)
 	private float weight;
 	@Column(name = "duration", precision=2, nullable=true)
@@ -50,20 +50,16 @@ public class Activity{
 	
 	
 	
-	@Override
-	public String toString() {
-		return "Activity [id=" + id + ", userName=" + userName + ", activityName=" + exerciseName + ", workoutDate="
-				+ workoutDate + ", amountOfSets=" + amountOfSets + ", amountOfRepeatition=" + amountOfRepeatition
-				+ ", weight=" + weight + ", duration=" + duration + ", type=" + type + "]";
-	}
+	
+	
 	
 	public Activity() {
 		super();
 	}
-	public Activity(int id, String userName, String activityName, Date workoutDate, int amountOfSets,
-			int amountOfRepeatition, float weight, float duration, String type) {
+	public Activity(String userName, String activityName, Date workoutDate, Integer amountOfSets,
+			Integer amountOfRepeatition, float weight, float duration, String type) {
 		super();
-		this.id = id;
+		// this.id = id; // will be assigned automatically by the auto-increment.
 		this.userName = userName;
 		this.exerciseName = activityName;
 		this.workoutDate = workoutDate;
@@ -74,12 +70,28 @@ public class Activity{
 		this.type = type;
 	}
 
-	public int getId() {
+	@Override
+	public String toString() {
+		return "Activity [id=" + id + ", userName=" + userName + ", exerciseName=" + exerciseName + ", workoutDate="
+				+ workoutDate + ", amountOfSets=" + amountOfSets + ", amountOfRepeatition=" + amountOfRepeatition
+				+ ", weight=" + weight + ", duration=" + duration + ", type=" + type + "]";
+	}
+
+	public String getExerciseName() {
+		return exerciseName;
+	}
+	public void setExerciseName(String exerciseName) {
+		this.exerciseName = exerciseName;
+	}
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
@@ -98,16 +110,16 @@ public class Activity{
 	public void setWorkoutDate(Date workoutDate) {
 		this.workoutDate = workoutDate;
 	}
-	public int getAmountOfSets() {
+	public Integer getAmountOfSets() {
 		return amountOfSets;
 	}
-	public void setAmountOfSets(int amountOfSets) {
+	public void setAmountOfSets(Integer amountOfSets) {
 		this.amountOfSets = amountOfSets;
 	}
-	public int getAmountOfRepeatition() {
+	public Integer getAmountOfRepeatition() {
 		return amountOfRepeatition;
 	}
-	public void setAmountOfRepeatition(int amountOfRepeatition) {
+	public void setAmountOfRepeatition(Integer amountOfRepeatition) {
 		this.amountOfRepeatition = amountOfRepeatition;
 	}
 	public float getWeight() {

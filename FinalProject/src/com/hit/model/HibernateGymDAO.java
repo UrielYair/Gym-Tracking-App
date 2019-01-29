@@ -7,6 +7,8 @@ import org.hibernate.cfg.AnnotationConfiguration;
 
 public class HibernateGymDAO implements IGymDAO {
 
+	//TODO: fix all this class according to the new tables structures.
+	
 	private static HibernateGymDAO gymDAO;
 	private SessionFactory factory;
 
