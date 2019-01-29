@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="jars"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="jars/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="jars/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="jars/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="jars/hibernate3.jar"/>
+	<classpathentry kind="lib" path="jars/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="jars/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="jars/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="jars/mysql-connector-java-5.1.13-bin.jar"/>
+	<classpathentry kind="lib" path="jars/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="jars/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
