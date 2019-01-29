@@ -15,48 +15,47 @@ public class ActivityController {
 
 	public void add(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
 
+		//TODO: consider throwing exceptions instead of using return statements.
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
 
 		Integer userId = (Integer) session.getAttribute("id");
-		if (userId != null) { // check if user connected to the system
+		if (userId == null) {
+			// check if user connected to the system
+			writer.println("you are not connected!");
+			return;
+		}
+		 
+		String activityName = request.getParameter("activityName");
+		String numberOfSets = request.getParameter("numberOfSets");
+		String numberOfRepeat = request.getParameter("numberOfRepeat");
 
-			String activityName = request.getParameter("activityName");
-			String numberOfSets = request.getParameter("numberOfSets");
-			String numberOfRepeat = request.getParameter("numberOfRepeat");
-
-			if (activityName != "" && numberOfSets.chars().allMatch(Character::isDigit)
-					&& numberOfRepeat.chars().allMatch(Character::isDigit)) {
-
-				Integer sets = Integer.parseInt(numberOfSets);
-				Integer repeat = Integer.parseInt(numberOfRepeat);
-
-				if (activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back")) {
-
-					HibernateGymDAO dao = HibernateGymDAO.getInstance();
-					Activity activity = new Activity(userId, activityName, sets, repeat);
-					try {
-						if (dao.addActivity(activity)) {
-							writer.println("added successfully");
-						} else {
-							writer.println("activity already exist");
-						}
-
-					} catch (ActivityDBException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				} else {
-					writer.println("wrong activity name");
-				}
-
+		if (!((activityName != "" && numberOfSets.chars().allMatch(Character::isDigit)
+				&& numberOfRepeat.chars().allMatch(Character::isDigit)))) {
+			writer.println("wrong input");
+			return;
+		}
+				
+		// TODO: eliminate hard coded text in advance.
+		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
+			writer.println("wrong activity name");
+			return;
+		}
+		
+		Integer sets = Integer.parseInt(numberOfSets);
+		Integer repeat = Integer.parseInt(numberOfRepeat);
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+		Activity activity = new Activity(userId, activityName, sets, repeat);
+		try {
+			if (dao.addActivity(activity)) {
+				writer.println("added successfully");
 			} else {
-				writer.println("wrong input");
+				writer.println("activity already exist");
 			}
 
-		} else {
-			writer.println("you are not connected!");
+		} 
+		catch (ActivityDBException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -66,77 +65,77 @@ public class ActivityController {
 		HttpSession session = request.getSession();
 
 		Integer userId = (Integer) session.getAttribute("id");
-		if (userId != null) { // check if user connected to the system
+		
+		if (userId==null) {
+			writer.println("you are not connected!");
+			return;
+		}
+		 
+		// check if user connected to the system
 
-			String activityName = request.getParameter("activityName");
-			String numberOfSets = request.getParameter("numberOfSets");
-			String numberOfRepeat = request.getParameter("numberOfRepeat");
+		String activityName = request.getParameter("activityName");
+		String numberOfSets = request.getParameter("numberOfSets");
+		String numberOfRepeat = request.getParameter("numberOfRepeat");
 
-			if (activityName != "" && numberOfSets.chars().allMatch(Character::isDigit)
-					&& numberOfRepeat.chars().allMatch(Character::isDigit)) {
+		if (!(activityName != "" && numberOfSets.chars().allMatch(Character::isDigit)
+				&& numberOfRepeat.chars().allMatch(Character::isDigit))) {
+			writer.println("wrong input");
+			return;
+		}
+		
 
-				Integer sets = Integer.parseInt(numberOfSets);
-				Integer repeat = Integer.parseInt(numberOfRepeat);
+		Integer sets = Integer.parseInt(numberOfSets);
+		Integer repeat = Integer.parseInt(numberOfRepeat);
 
-				if (activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back")) {
-
-					HibernateGymDAO dao = HibernateGymDAO.getInstance();
-					Activity activity = new Activity(userId, activityName, sets, repeat);
-					try {
-						if (dao.activityExist(activity)) {
-							dao.updateActivity(activity);
-							writer.println("updated successfully");
-						} else {
-							writer.println("activity doesn't exist");
-						}
-
-					} catch (ActivityDBException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				} else {
-					writer.println("wrong activity name");
-				}
-
+		//TODO: eliminate hard coded text.	
+		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
+			writer.println("wrong activity name");
+			return;
+		}
+		
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+		Activity activity = new Activity(userId, activityName, sets, repeat);
+		try {
+			if (dao.activityExist(activity)) {
+				dao.updateActivity(activity);
+				writer.println("updated successfully");
 			} else {
-				writer.println("wrong input");
+				writer.println("activity doesn't exist");
 			}
 
-		} else {
-			writer.println("you are not connected!");
+		} catch (ActivityDBException e) {
+			e.printStackTrace();
 		}
-	}
 
+	} 
+	
 	public void delete(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
 
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
 
 		Integer userId = (Integer) session.getAttribute("id");
-		if (userId != null) { // check if user connected to the system
-
-			String activityName = request.getParameter("activityName");
-
-			if (activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back")) {
-
-				HibernateGymDAO dao = HibernateGymDAO.getInstance();
-				
-				try {
-					dao.deleteActivity(userId, activityName);
-					writer.println("activity " + activityName + " deleted successfully");
-
-				} catch (ActivityDBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				writer.println("wrong activity name");
-			}
-
-		} else {
+		if (userId==null) {
 			writer.println("you are not connected!");
+			return;
+		}
+		// check if user connected to the system
+
+		String activityName = request.getParameter("activityName");
+
+		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
+			writer.println("wrong activity name");
+			return;
+		}
+		
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+		
+		try {
+			dao.deleteActivity(userId, activityName);
+			writer.println("activity " + activityName + " deleted successfully");
+		} 
+		catch (ActivityDBException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -146,29 +145,27 @@ public class ActivityController {
 		HttpSession session = request.getSession();
 
 		Integer userId = (Integer) session.getAttribute("id");
-		if (userId != null) { // check if user connected to the system
-
-			String activityName = request.getParameter("activityName");
-
-			if (activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back")) {
-
-				HibernateGymDAO dao = HibernateGymDAO.getInstance();
-				
-				try {
-					Activity activity = dao.getActivity(userId, activityName);
-					writer.println(activity.toString());
-
-				} catch (ActivityDBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				writer.println("wrong activity name");
-			}
-
-		} else {
+		if (userId==null) {
 			writer.println("you are not connected!");
+			return;
+		}
+		// check if user connected to the system
+
+		String activityName = request.getParameter("activityName");
+
+		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
+			writer.println("wrong activity name");
+			return;
+		}
+
+		HibernateGymDAO dao = HibernateGymDAO.getInstance();
+		
+		try {
+			Activity activity = dao.getActivity(userId, activityName);
+			writer.println(activity.toString());
+
+		} catch (ActivityDBException e) {
+			e.printStackTrace();
 		}
 	}
 }
