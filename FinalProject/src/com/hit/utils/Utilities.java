@@ -3,34 +3,48 @@ package com.hit.utils;
 import static com.hit.utils.Utilities.activityInputValidation;
 import static com.hit.utils.Utilities.getUserNameByID;
 
-
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.hit.model.Activity;
+import com.hit.model.User;
 
 public class Utilities {
 	public static String getUserNameByID(Integer userIdToFind) {
 		//TODO: implement by querying the Users table in the DataBase.
-		return "";
+		return null;
+	}
+	
+	public static User getUserByUserName(String userName) {
+		//TODO: implement.
+		return null;
+	}
+
+	private static User getUserById(String userId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
-	public static boolean activityInputValidation(
-													Integer userId, 
-													String userName, 
-													String activityName, 
-													Date workoutDate,
-													Integer amountOfSets, 
-													Integer amountOfRepeatition, 
-													float weight, 
-													float duration, 
-													String type) throws Exception
+	public static User getCurrentlyConnectedUser(HttpServletRequest request){
+		String userId = request.getSession().getAttribute("id").toString();
+		return getUserById(userId);
+	}
+
+	public static boolean activityInputValidation(	
+			Integer userId, String userName, String activityName, Date workoutDate, 
+			Integer amountOfSets, Integer amountOfRepeatition, float weight, float duration, String type) throws Exception
 	{
 		//TODO: implement while using exception.
 				return true;
+	}
+	
+	public static ArrayList<Activity> getSpecificWorkout(Date dayOfWorkoutToBeChanged, String userToUpdate){
+		//TODO: implement!
+		return null;
 	}
 	
 	public static Activity createActivityfromRequest(HttpServletRequest request) throws Exception
