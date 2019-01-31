@@ -1,8 +1,11 @@
 package com.hit.controller;
 
+import static com.hit.utils.Utilities.getSpecificWorkout;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,72 +13,124 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.jni.Local;
+
 import com.hit.model.Activity;
 import com.hit.model.ActivityDBException;
 import com.hit.model.HibernateGymDAO;
-import static com.hit.utils.Utilities.getUserNameByID;
-import static com.hit.utils.Utilities.activityInputValidation;
-import static com.hit.utils.Utilities.createActivityfromRequest;
-import static com.hit.utils.Utilities.getSpecificWorkout;
-
-
+import com.hit.model.User;
+import com.hit.utils.InputValidator;
 
 public class ActivityController {
+	private InputValidator inputValidator;
+	private PrintWriter printWriter;
+	private HibernateGymDAO hibernateGymDAO;
+	private HttpSession httpSession;
+	private Activity activity;
+	private User user;
 
-	public void add(HttpServletRequest request, HttpServletResponse response, String str) throws Exception {
-
-			PrintWriter writer = response.getWriter();
-			HttpSession session = request.getSession();
-	
-			Activity activity = createActivityfromRequest(request);
-			HibernateGymDAO dao = HibernateGymDAO.getInstance();	
-			
-			if (dao.addActivity(activity)) {
-				writer.println("added successfully"); 
-			} 
-			else {
-				writer.println("activity already exist");
-			}
-
+	public ActivityController() {
+		this.printWriter = null;
+		this.hibernateGymDAO = HibernateGymDAO.getInstance();
+		this.httpSession = null;
+		this.activity = null;
+		this.user = null;
 	}
 
-	public void update(HttpServletRequest request, HttpServletResponse response, String str) throws Exception {
+	// Done, need to check
+	public void add(HttpServletRequest request, HttpServletResponse response) {
+		printWriter = response.getWriter();
+		httpSession = request.getSession();
+		activity = createActivity(request); // to implement createActivity()
 
-		PrintWriter writer = response.getWriter();
+		try {
+			// to implement inputValidation()
+			if (inputValidator.inputValidation(activity)) {
+				System.out.printf("%s %s: Input is valid, going to add.", getTime(), getMethodName());
+				if (hibernateGymDAO.addActivity(activity)) {
+					System.out.printf("%s %s: Activity has been added", getTime(), getMethodName());
+					printWriter.println("added successfully");
+				} else {
+					System.out.printf("%s %s: Activity already exist", getTime(), getMethodName());
+					printWriter.println("activity already exist");
+				}
+			} else {
+				System.out.printf("%s %s: Activity is not valid", getTime(), getMethodName());
+				printWriter.println("activity is not valid");
+			}
+		} catch (ActivityDBException activityDBException) {
+			activityDBException.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			printWriter.close();
+			activity = null;
+		}
+	}
+
+	// Done, need to check
+	public void update(HttpServletRequest request, HttpServletResponse response) {
+		String userName = request.getParameter("username");
+		System.out.printf("%s %s: Going to update, username = %s", getTime(), getMethodName(), userName);
+
+		try {
+			printWriter = response.getWriter();
+			if (inputValidator.inputValidation(activity)) {
+				System.out.printf("%s %s: Input is valid, going to update.", getTime(), getMethodName());
+				if (hibernateGymDAO.updateActivity(activity)) {
+					System.out.printf("%s %s: Activity has been updated", getTime(), getMethodName());
+					printWriter.println("added successfully");
+				} else {
+					System.out.printf("%s %s: Activity cannot be updated", getTime(), getMethodName());
+					printWriter.println("activity cannot be updated");
+				}
+			} else {
+				System.out.printf("%s %s: Activity is not valid", getTime(), getMethodName());
+				printWriter.println("activity is not valid");
+			}
+		} catch (ActivityDBException activityDBException) {
+			activityDBException.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			printWriter.close();
+			activity = null;
+		}
+	}
+
+	public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		printWriter = response.getWriter();
 		HttpSession session = request.getSession();
+		String activityName = request.getParameter("activityName");
+		String userName = request.getParameter("username");
 
-		HibernateGymDAO dao = HibernateGymDAO.getInstance();
-		
-		//Assuming the method will update specific exercise out of specific workout in specific date!!!
-		
-		//activities(id, user_name, exercise_name, workout_date, amount_of_sets, repeats, weight, duration, type)
-		
-		Date dayOfWorkoutToBeChanged = DateFormat.parse(request.getParameter("day"));
-		ArrayList<Activity> workout = getSpecificWorkout(dayOfWorkoutToBeChanged,userToUpdate); // all activities(exercise/cardio) from specific workout.
-		
-		//createActivityfromRequest(request);
-
-		if (dao.activityExist(activity)) {
-			dao.updateActivity(activity);
-			writer.println("updated successfully");
-		} else {
-			writer.println("activity doesn't exist");
+		// activities(id, user_name, exercise_name, workout_date, amount_of_sets,
+		// repeats, weight, duration, type)
+		try {
+			// to implement inputValidation()
+			if (inputValidator.inputValidation(activity)) {
+				System.out.printf("%s %s: Input is valid, going to update.", getTime(), getMethodName());
+				if (hibernateGymDAO.deleteActivity(userName, activityName)) {
+					System.out.printf("%s %s: Activity has been deleted", getTime(), getMethodName());
+					printWriter.println("deleted successfully");
+				} else {
+					System.out.printf("%s %s: Activity cannot be deleted", getTime(), getMethodName());
+					printWriter.println("activity cannot be deleted");
+				}
+			} else {
+				System.out.printf("%s %s: Activity is not valid", getTime(), getMethodName());
+				printWriter.println("activity is not valid");
+			}
+		} catch (ActivityDBException activityDBException) {
+			activityDBException.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			printWriter.close();
+			activity = null;
 		}
 
-	} 
-	
-	public void delete(HttpServletRequest request, HttpServletResponse response, String str) throws Exception {
-
-		PrintWriter writer = response.getWriter();
-		HttpSession session = request.getSession();
-		HibernateGymDAO dao = HibernateGymDAO.getInstance();
-		
-		String activityName = request.getParameter("activityName");
-
-		
-		//activities(id, user_name, exercise_name, workout_date, amount_of_sets, repeats, weight, duration, type)
-		dao.deleteActivity(userId, activityName);
-		writer.println("activity " + activityName + " deleted successfully");
 	}
 
 	public void get(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
@@ -84,7 +139,7 @@ public class ActivityController {
 		HttpSession session = request.getSession();
 
 		Integer userId = (Integer) session.getAttribute("id");
-		if (userId==null) {
+		if (userId == null) {
 			writer.println("you are not connected!");
 			return;
 		}
@@ -98,7 +153,7 @@ public class ActivityController {
 		}
 
 		HibernateGymDAO dao = HibernateGymDAO.getInstance();
-		
+
 		try {
 			Activity activity = dao.getActivity(userId, activityName);
 			writer.println(activity.toString());
@@ -106,5 +161,13 @@ public class ActivityController {
 		} catch (ActivityDBException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String getTime() {
+		return LocalTime.now().toString();
+	}
+
+	private String getMethodName() {
+		return Local.class.getEnclosingMethod().getName();
 	}
 }

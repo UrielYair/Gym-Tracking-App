@@ -54,8 +54,9 @@ public class HibernateGymDAO implements IGymDAO {
 		return true;
 	}
 
+	//Integer ID changed to String username by Vadim 31.01.19
 	@Override
-	public boolean deleteActivity(Integer id, String name) throws ActivityDBException {
+	public boolean deleteActivity(String userName, String name) throws ActivityDBException {
 
 		// creating a new session for adding products
 		Session session = (Session) factory.openSession();

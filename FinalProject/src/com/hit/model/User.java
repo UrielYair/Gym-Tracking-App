@@ -28,9 +28,9 @@ public class User {
 		super();
 	}
 	
-	public User(Integer id, String name, String password)
+	//Integer ID removed by Vadim 31.01.19
+	public User(String name, String password)
 	{
-		this.setId(id);
 		this.setName(name);
 		this.setPassword(password);
 	}

@@ -13,13 +13,15 @@ import org.apache.tomcat.jni.Local;
 import com.hit.model.HibernateGymDAO;
 import com.hit.model.User;
 import com.hit.model.UserDBException;
+import com.hit.utils.InputValidator;
 
-public class UserController {
+public class UserController{
 	private String userName;
 	private String password;
 	private PrintWriter printWriter;
 	private HibernateGymDAO hibernateGymDAO;
 	private User user;
+	private InputValidator inputValidator;
 
 	public UserController() {
 		this.userName = null;
@@ -36,7 +38,7 @@ public class UserController {
 		System.out.printf("%s %s: Register user - userName = %s, password = %s", getTime(), getMethodName(), userName,
 				password);
 
-		if (inputValidation()) {
+		if (inputValidator.usernameValidation(userName)) {
 			try {
 				user = hibernateGymDAO.getUser(userName);
 
@@ -75,7 +77,7 @@ public class UserController {
 		System.out.printf("%s %s: Login user - userName = %s, password = %s", getTime(), getMethodName(), userName,
 				password);
 
-		if (inputValidation()) {
+		if (inputValidator.usernameValidation(userName)) {
 			try {
 				user = hibernateGymDAO.getUser(userName);
 

@@ -4,7 +4,7 @@ public interface IGymDAO {
 
 	public boolean activityExist(Activity activity) throws ActivityDBException;
 	public boolean addActivity(Activity activity) throws ActivityDBException;
-	public boolean deleteActivity(Integer id, String name) throws ActivityDBException;
+	public boolean deleteActivity(String userName, String name) throws ActivityDBException;
 	public boolean updateActivity(Activity activity) throws ActivityDBException;
 	public Activity getActivity(Integer id, String name) throws ActivityDBException;
 	
