@@ -1,7 +1,6 @@
  package com.hit.model;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -11,13 +10,14 @@ public class User {
 	// user(id,user_name,password) 
 
 	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name = "userId", length=10, nullable=false, unique=true)
 	// will be auto-incremented. 
 	// user will not have the ability to choose his id and the server will generate one for him.
 	private Integer id;
 	
 	
-	@Column(name = "user_name", length=20, nullable=false)
+	@Column(name = "user_name", length=20, nullable=false, unique=true)
 	private String userName;
 	
 	@Column(name = "password", length=20, nullable=false)
@@ -31,6 +31,8 @@ public class User {
 	//Integer ID removed by Vadim 31.01.19
 	public User(String name, String password)
 	{
+		//you should set some id for the use of hibernate  
+		this.setId(0); // will be assigned automatically by the auto-increment.
 		this.setName(name);
 		this.setPassword(password);
 	}

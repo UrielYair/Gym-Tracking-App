@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,7 +17,8 @@ public class Activity{
 	// activities(id, user_name, exercise_name, workout_date, amount_of_sets, repeats, weight, duration, type)
 	
 	@Id
-	@Column(name = "userId", length=10, nullable=false, unique=true)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name = "activityId", length=10, nullable=false, unique=true)
 	private Integer id;
 	@Column(name = "user_name", length=20, nullable=false)
 	private String userName;
@@ -59,7 +62,9 @@ public class Activity{
 	public Activity(String userName, String activityName, Date workoutDate, Integer amountOfSets,
 			Integer amountOfRepeatition, float weight, float duration, String type) {
 		super();
-		// this.id = id; // will be assigned automatically by the auto-increment.
+		
+		//you should set some id for the use of hibernate  
+		this.id = 0; // will be assigned automatically by the auto-increment.
 		this.userName = userName;
 		this.exerciseName = activityName;
 		this.workoutDate = workoutDate;
