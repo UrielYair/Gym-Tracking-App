@@ -23,8 +23,7 @@ public class ActivityId implements Serializable {
 		super();
 	}
 	
-	public ActivityId(Integer id, String name) {
-		this.setId(id);
+	public ActivityId(String name) {
 		this.setName(name);
 	}
 
