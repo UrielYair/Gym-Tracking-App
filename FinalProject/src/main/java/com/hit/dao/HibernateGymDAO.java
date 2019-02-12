@@ -18,16 +18,16 @@ public class HibernateGymDAO implements IGymDAO {
 
 	// creating factory for getting sessions
 	private HibernateGymDAO() {
-		LOGGER.debug("Creating factory for sessions");
+		LOGGER.info("Creating factory for sessions");
 		factory = new AnnotationConfiguration().configure().buildSessionFactory();
 	}
 
 	public static HibernateGymDAO getInstance() {
 		if (gymDAO == null) {
-			LOGGER.debug("Going to create new instanse of Hibernate");
+			LOGGER.info("Going to create new instanse of Hibernate");
 			gymDAO = new HibernateGymDAO();
 		} else {
-			LOGGER.debug("Hibernate instance already created");
+			LOGGER.info("Hibernate instance already created");
 		}
 		return gymDAO;
 	}
@@ -37,9 +37,9 @@ public class HibernateGymDAO implements IGymDAO {
 		boolean isExist = false;
 		if (getInstance().getActivity(activity.getUserName()) != null) {
 			isExist = true;
-			LOGGER.debug("Activity exist");
+			LOGGER.info("Activity exist");
 		} else {
-			LOGGER.debug("Activity NOT exist");
+			LOGGER.info("Activity NOT exist");
 		}
 
 		return isExist;
@@ -54,10 +54,10 @@ public class HibernateGymDAO implements IGymDAO {
 			if (!getInstance().activityExist(activity)) {
 				((org.hibernate.Session) session).save(activity);
 				((org.hibernate.Session) session).getTransaction().commit();
-				LOGGER.debug("Activity was added");
+				LOGGER.info("Activity was added");
 				wasAdded = true;
 			} else {
-				LOGGER.debug("Activity was NOT added");
+				LOGGER.info("Activity was NOT added");
 			}
 			session.close();
 		} catch (HibernateException hibernateException) {
@@ -81,7 +81,7 @@ public class HibernateGymDAO implements IGymDAO {
 			if (activity != null) {
 				((org.hibernate.Session) session).delete(activity);
 				((org.hibernate.Session) session).getTransaction().commit();
-				LOGGER.debug("Activity was deleted");
+				LOGGER.info("Activity was deleted");
 			}
 			session.close();
 		} catch (HibernateException hibernateException) {
@@ -101,7 +101,7 @@ public class HibernateGymDAO implements IGymDAO {
 			((org.hibernate.Session) session).beginTransaction();
 			((org.hibernate.Session) session).update(activity);
 			((org.hibernate.Session) session).getTransaction().commit();
-			LOGGER.debug("Activity updated");
+			LOGGER.info("Activity updated");
 			session.close();
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error!");
@@ -121,10 +121,10 @@ public class HibernateGymDAO implements IGymDAO {
 
 			// Activity activity = session.createQuery("from activities").;
 			activity = (Activity) session.get(Activity.class, new ActivityId(activityName));
-			LOGGER.debug("Activity found");
+			LOGGER.info("Activity found");
 			session.close();
 		} catch (HibernateException hibernateException) {
-			LOGGER.debug("DB error!");
+			LOGGER.fatal("DB error!");
 		} finally {
 			LOGGER.fatal("Going to close Session");
 			session.close();
@@ -137,9 +137,9 @@ public class HibernateGymDAO implements IGymDAO {
 		boolean isExist = false;
 		if (getInstance().getUser(user.getName()) != null) {
 			isExist = true;
-			LOGGER.debug("User exist");
+			LOGGER.info("User exist");
 		} else {
-			LOGGER.debug("User NOT exist");
+			LOGGER.info("User NOT exist");
 		}
 
 		return isExist;
@@ -150,16 +150,19 @@ public class HibernateGymDAO implements IGymDAO {
 		Session session = (Session) factory.openSession();
 		boolean wasAdded = false;
 		try {
-			((org.hibernate.Session) session).beginTransaction();
+			session.beginTransaction();
 			if (!getInstance().userExist(user)) {
-				((org.hibernate.Session) session).save(user);
-				((org.hibernate.Session) session).getTransaction().commit();
+				session.save(user);
+				session.getTransaction().commit();
 				wasAdded = true;
-				LOGGER.debug("User was added");
-				session.close();
+				LOGGER.info("User was added");
 			}
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error!");
+			LOGGER.fatal(hibernateException.getMessage());
+		} catch (Exception exception) {
+			LOGGER.fatal("Error!, unknown exception");
+			LOGGER.fatal(exception.getMessage());
 		} finally {
 			LOGGER.info("Closing Session");
 			session.close();
@@ -170,18 +173,21 @@ public class HibernateGymDAO implements IGymDAO {
 	@Override
 	public User getUser(String userName) {
 		Session session = (Session) factory.openSession();
-		User user = null;
+		User user = new User();
 		try {
-			((org.hibernate.Session) session).beginTransaction();
-			user = (User) session.get(User.class, userName);
+			session.beginTransaction();
+			user = (User) session.get(User.class, 8);
 			if (user != null) {
-				LOGGER.debug("User was found");
+				LOGGER.info("User was found");
 			} else {
-				LOGGER.debug("User was NOT found");
+				LOGGER.info("User was NOT found");
 			}
-			session.close();
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error!");
+			LOGGER.fatal(hibernateException.getMessage());
+		} catch (Exception exception) {
+			LOGGER.fatal("Error!, unknown exception");
+			LOGGER.fatal(exception.getMessage());
 		} finally {
 			LOGGER.info("Closing Session");
 			session.close();
@@ -198,14 +204,13 @@ public class HibernateGymDAO implements IGymDAO {
 			((org.hibernate.Session) session).beginTransaction();
 			user = (User) session.get(User.class, userName);
 			if (user != null) {
-				LOGGER.debug("User was found, preparing to delete");
+				LOGGER.info("User was found, preparing to delete");
 				((org.hibernate.Session) session).delete(user);
 				((org.hibernate.Session) session).getTransaction().commit();
 				wasDeleted = true;
 			} else {
-				LOGGER.debug("User was NOT found");
+				LOGGER.info("User was NOT found");
 			}
-			session.close();
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB Error!");
 		} finally {

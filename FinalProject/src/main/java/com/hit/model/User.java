@@ -3,7 +3,7 @@
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
 public class User {
 	
 	// Table structure:
@@ -11,18 +11,18 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name = "userId", length=10, nullable=false, unique=true)
+	@Column(name = "Id", length=10, nullable=false, unique=true)
 	// will be auto-incremented. 
 	// user will not have the ability to choose his id and the server will generate one for him.
 	private Integer id;
 	
-	
-	@Column(name = "user_name", length=20, nullable=false, unique=true)
-	private String userName;
+	@Column(name = "username", length=20, nullable=false, unique=true)
+	private String userName;	
 	
 	@Column(name = "password", length=20, nullable=false)
 	private String password;
 	
+
 	public User()
 	{
 		super();

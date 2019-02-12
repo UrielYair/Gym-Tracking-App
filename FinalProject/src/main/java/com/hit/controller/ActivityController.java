@@ -54,8 +54,6 @@ public class ActivityController {
 				LOGGER.info("Activity is not valid");
 				printWriter.println("activity is not valid");
 			}
-		} catch (ActivityDBException activityDBException) {
-			activityDBException.printStackTrace();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} finally {

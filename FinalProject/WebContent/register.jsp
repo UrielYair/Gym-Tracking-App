@@ -10,9 +10,7 @@
 <h1>Registration</h1>
 <form method="post" action="http://localhost:8080/FinalProject/controller/User/register">
 
-	User Id: <input type="text" name="userId" />
-	<br/>
-	User name: <input type="text" name="username" />
+	Username: <input type="text" name="username" />
 	<br/>
 	Password: <input type="text" name="password" />
 	<br/>
