@@ -1,4 +1,7 @@
-package com.hit.model;
+package com.hit.dao;
+
+import com.hit.model.Activity;
+import com.hit.model.User;
 
 public interface IGymDAO {
 

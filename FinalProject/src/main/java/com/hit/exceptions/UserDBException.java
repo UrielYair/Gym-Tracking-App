@@ -1,4 +1,4 @@
-package com.hit.model;
+package com.hit.exceptions;
 
 public class UserDBException extends Exception {
 

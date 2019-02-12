@@ -10,7 +10,7 @@
 <h1>Login</h1>
 <form method="post" action="http://localhost:8080/FinalProject/controller/User/login">
 
-	User Id: <input type="text" name="userId" />
+	User Id: <input type="text" name="username" />
 	<br/>
 	Password: <input type="text" name="password" />
 	<br/>

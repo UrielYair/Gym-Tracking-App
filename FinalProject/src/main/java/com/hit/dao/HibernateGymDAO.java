@@ -1,10 +1,14 @@
-package com.hit.model;
+package com.hit.dao;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+
+import com.hit.model.Activity;
+import com.hit.model.ActivityId;
+import com.hit.model.User;
 
 public class HibernateGymDAO implements IGymDAO {
 	private static final Logger LOGGER = Logger.getLogger(HibernateGymDAO.class.getSimpleName());

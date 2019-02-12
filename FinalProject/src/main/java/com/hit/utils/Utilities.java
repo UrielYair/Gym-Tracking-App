@@ -1,8 +1,5 @@
 package com.hit.utils;
 
-import static com.hit.utils.Utilities.activityInputValidation;
-import static com.hit.utils.Utilities.getUserNameByID;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,19 +36,12 @@ public class Utilities {
 		return getUserById(userId);
 	}
 
-	public static boolean activityInputValidation(Integer userId, String userName, String activityName,
-			Date workoutDate, Integer amountOfSets, Integer amountOfRepeatition, float weight, float duration,
-			String type) throws Exception {
-		// TODO: implement while using exception.
-		return true;
-	}
-
 	public static ArrayList<Activity> getSpecificWorkout(Date dayOfWorkoutToBeChanged, String userToUpdate) {
 		// TODO: implement!
 		return null;
 	}
 
-	public static Activity createActivityFromRequest(HttpServletRequest request) throws Exception {
+	public Activity createActivityFromRequest(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		Activity activity = null;
 		Integer userId = (Integer) session.getAttribute("id");
@@ -63,14 +53,8 @@ public class Utilities {
 		float weight = Float.parseFloat(request.getParameter("weight"));
 		float duration = Float.parseFloat(request.getParameter("activityDuration"));
 		String type = request.getParameter("activityType");
-
-		// will throw exception if needed.
-		if (activityInputValidation(userId, userName, activityName, workoutDate, amountOfSets, amountOfRepeatition,
-				weight, duration, type)) {
-			activity = new Activity(userName, activityName, workoutDate, amountOfSets, amountOfRepeatition, weight,
-					duration, type);
-		}
-		
+		activity = new Activity(userName, activityName, workoutDate, amountOfSets, amountOfRepeatition, weight,
+				duration, type);
 		return activity;
 
 	}

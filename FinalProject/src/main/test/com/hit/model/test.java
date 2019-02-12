@@ -1,5 +1,9 @@
 package com.hit.model;
 
+import com.hit.dao.HibernateGymDAO;
+import com.hit.exceptions.ActivityDBException;
+import com.hit.exceptions.UserDBException;
+
 public class test {
 
 	public static void main(String[] args) throws UserDBException, ActivityDBException 

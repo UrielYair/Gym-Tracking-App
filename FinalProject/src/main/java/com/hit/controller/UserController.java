@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.hit.model.HibernateGymDAO;
+import com.hit.dao.HibernateGymDAO;
 import com.hit.model.User;
 import com.hit.utils.InputValidator;
 
-public class UserController {
+public class UserController{
 	private static final Logger LOGGER = Logger.getLogger(UserController.class.getSimpleName());
 
 	private String userName;
@@ -28,6 +28,7 @@ public class UserController {
 		this.userName = null;
 		this.password = null;
 		this.printWriter = null;
+		this.inputValidator = new InputValidator();
 		this.hibernateGymDAO = HibernateGymDAO.getInstance();
 		this.user = null;
 	}
@@ -37,7 +38,7 @@ public class UserController {
 		userName = request.getParameter("username");
 		password = request.getParameter("password");
 		LOGGER.debug("Going to reginster new user: username = " + userName + "password = " + password);
-		if (inputValidator.usernameValidation(userName)) {
+		if (inputValidator.usernameValidation(userName) && inputValidator.passwordValidation(password)) {
 			LOGGER.debug("Input is valid");
 			try {
 				printWriter = response.getWriter();
@@ -65,48 +66,47 @@ public class UserController {
 				LOGGER.fatal("Going to close writer");
 				printWriter.close();
 			}
+		} else {
+			LOGGER.debug("Input is not valid");
 		}
-		LOGGER.debug("Input is not valid");
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userName = request.getParameter("username");
 		password = request.getParameter("password");
 		LOGGER.debug("Login user - userName = " + userName + " password = " + password);
-		if (inputValidator.usernameValidation(userName)) {
-			LOGGER.debug("Input is valid");
-			try {
+		try {
+			if (inputValidator.usernameValidation(userName) && inputValidator.passwordValidation(password)) {
+				LOGGER.debug("Input is valid");
 				printWriter = response.getWriter();
 				user = hibernateGymDAO.getUser(userName);
 				if (user != null) {
 					LOGGER.debug("User exist, going to check password");
 					if (user.getPassword().equals(password)) {
 						LOGGER.debug("password correct, going to login...");
-						HttpSession session = request.getSession();
-						session.setAttribute("username", userName);
-						session.setMaxInactiveInterval(300); // 5 min timeout - 300 sec
 						printWriter.println("Login successfully");
 						LOGGER.debug("Login successfully");
 					} else {
 						LOGGER.debug("password is not correct!");
-						printWriter.println("Wrong password, please retry");
+						//printWriter.println("Wrong password, please retry");
 					}
 				} else {
 					LOGGER.debug("User does not exist at DB");
-					printWriter.println("User dosen't exist");
+					printWriter.println("User dosen't exist, please register before login");
 				}
-			}  catch (IOException ioException) {
-				LOGGER.fatal("Error, IOException!");
-				ioException.printStackTrace();
-			} catch (Exception exception) {
-				LOGGER.debug("Error, unknown Exception!");
-				exception.printStackTrace();
-			} finally {
-				LOGGER.debug("Going to close writer");
-				printWriter.close();
+			} else {
+				LOGGER.debug("Input is not valid");
 			}
+		} catch (IOException ioException) {
+			LOGGER.fatal("Error, IOException!");
+			ioException.printStackTrace();
+		} catch (Exception exception) {
+			LOGGER.debug("Error, unknown Exception!");
+			exception.printStackTrace();
+		} finally {
+			LOGGER.debug("Going to close writer");
+			printWriter.close();
 		}
-		LOGGER.debug("Input is not valid");
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -120,7 +120,7 @@ public class UserController {
 			} else {
 				printWriter.println("you are not connected!");
 			}
-		}  catch (IOException ioException) {
+		} catch (IOException ioException) {
 			LOGGER.fatal("Error, IOException!");
 			ioException.printStackTrace();
 		} catch (Exception exception) {

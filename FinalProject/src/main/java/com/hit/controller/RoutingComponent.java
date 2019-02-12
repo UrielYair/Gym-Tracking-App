@@ -3,7 +3,6 @@ package com.hit.controller;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.time.LocalTime;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.tomcat.jni.Local;
 
 /**
  * Servlet implementation class RoutingComponent
@@ -20,6 +18,7 @@ import org.apache.tomcat.jni.Local;
 public class RoutingComponent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(RoutingComponent.class.getSimpleName());
+	
 	private String path;
 	private String[] parts;
 	private String controllerName;
