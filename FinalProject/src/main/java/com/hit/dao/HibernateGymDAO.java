@@ -1,7 +1,11 @@
 package com.hit.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -42,7 +46,7 @@ public class HibernateGymDAO implements IGymDAO {
 	public boolean activityExist(Activity activity) {
 		// boolean isExist = false;
 		
-		return (getInstance().getActivity(activity.getUserName()) != null);
+		return (getInstance().getActivity(activity.getUserName(), activity.getExerciseName(), activity.getWorkoutDate()) != null);
 		
 		// TODO: why should we log this results?
 		
@@ -148,17 +152,35 @@ public class HibernateGymDAO implements IGymDAO {
 	}
 
 	@Override
-	public Activity getActivity(String activityName) {
+	public Activity getActivity(String userName, String exerciseName, String workoutDate) {
 		Session session = (Session) factory.openSession();
 		Activity activity = null;
 		
 		try {
 			((org.hibernate.Session) session).beginTransaction();
-			activity = (Activity) session.get(Activity.class, new ActivityId(activityName)); // TODO: check if activityName is enough to differentiate between activities.
+			//activity = (Activity) session.get(Activity.class, new ActivityId(activityName)); // TODO: check if activityName is enough to differentiate between activities.
+		
+			Query query = session.createQuery("from Activity where userName = :un and exerciseName = :en and workoutDate = :d ");
+	        query.setParameter("un", userName);
+	        query.setParameter("en", exerciseName);
+	        query.setParameter("d", workoutDate);
+	        activity = (Activity) query.uniqueResult();
+	        
+			if(activity != null)
+			{
+				LOGGER.info("Activity was found");
+			} 
+			else {
+				LOGGER.info("Activity was NOT found");
+			}
+	        
 		} 
 		catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error while activity lookup!");
 		} 
+		catch (Exception exception) {
+			LOGGER.fatal("ERROR: " + exception.getMessage());
+		}
 		finally {
 			session.close();
 		}
@@ -218,11 +240,14 @@ public class HibernateGymDAO implements IGymDAO {
 	@Override
 	public User getUser(String userName) {
 		Session session = (Session) factory.openSession();
-		User user = new User();
+		User user = null;
 		
 		try {
 			session.beginTransaction();
-			user = (User) session.get(User.class, 8);  // TODO: change '8' to some userFind lookup method.
+			
+			Query query = session.createQuery("from User where username = :n");
+	        query.setParameter("n", userName);
+	        user = (User) query.uniqueResult();
 			
 			// TODO: consider deleting this logging operations. 
 			if (user != null) {

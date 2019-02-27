@@ -29,7 +29,7 @@ public class ActivityController {
 	}
 
 	// TODO: Done, need to check
-	public void add(HttpServletRequest request, HttpServletResponse response) {
+	public void add(HttpServletRequest request, HttpServletResponse response, String str) {
 		
 		/* *
 		 * The method is responsible for getting input parameters and validate them.
@@ -72,7 +72,7 @@ public class ActivityController {
 	}
 
 	// TODO: Done, need to check
-	public void update(HttpServletRequest request, HttpServletResponse response) {
+	public void update(HttpServletRequest request, HttpServletResponse response, String str) {
 		
 		/* * 
 		 * Method for update existing activity in DB.
@@ -115,7 +115,7 @@ public class ActivityController {
 		}
 	}
 
-	public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void delete(HttpServletRequest request, HttpServletResponse response, String str) throws Exception {
 
 		/* * 
 		 * Method for delete existing activity in DB.
@@ -166,16 +166,17 @@ public class ActivityController {
 		
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
-		Integer userId = (Integer) session.getAttribute("id");
+		String username = (String) session.getAttribute("username");
 		
-		if (userId == null) {
+		if (username == null) {
 			// TODO: is it even possible? - maybe should be removed.
 			writer.println("you are not connected!");
 			return;
 		}
 		// check if user connected to the system - TODO: what does that means?
 
-		String activityName = request.getParameter("activityName");
+		String activityName = request.getParameter("exercise_name");
+		String activityDate = request.getParameter("exerciseDate");
 
 		// input validation for exercise name:
 		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
@@ -183,7 +184,7 @@ public class ActivityController {
 			return;
 		}
 
-		Activity activity = hibernateGymDAO.getActivity(activityName); // TODO: check if activity name is enough for retrieving a specific activity from the DB.
+		Activity activity = hibernateGymDAO.getActivity(username , activityName , activityDate); // TODO: check if activity name is enough for retrieving a specific activity from the DB.
 		// in other words, check the key of activity table.
 		writer.println(activity.toString());
 

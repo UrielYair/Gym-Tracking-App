@@ -26,7 +26,7 @@ public class UserController{
 		this.inputValidator = new InputValidator();
 	}
 
-	public void register(HttpServletRequest request, HttpServletResponse response) {
+	public void register(HttpServletRequest request, HttpServletResponse response, String str) {
 		/**
 		 * Method for registering users in the system.
 		 * Existence check will be taken prior registration.
@@ -38,7 +38,7 @@ public class UserController{
 		
 		if (!inputValidator.usernameValidation(userName) || !inputValidator.passwordValidation(password)) {
 			LOGGER.info("Input is not valid");
-			return;
+			return; // error message
 		}
 		
 		LOGGER.info("Input is valid");
@@ -81,7 +81,7 @@ public class UserController{
 		}
 	} 
 	
-	public void login(HttpServletRequest request, HttpServletResponse response) {
+	public void login(HttpServletRequest request, HttpServletResponse response, String str) {
 		/**
 		 * Method is used to verify user while trying to login
 		 * */
@@ -104,6 +104,10 @@ public class UserController{
 			if (user != null) {
 				
 				if (user.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("userName", userName);
+					session.setMaxInactiveInterval(300); // 5 min timeout - 300 sec
+					
 					LOGGER.info(userName + " Logged on successfully.");
 					printWriter.println("Login successfully");
 				} 
@@ -161,7 +165,7 @@ public class UserController{
 		}
 	}
 
-	public void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+	public void deleteUser(HttpServletRequest request, HttpServletResponse response, String str) {
 		
 		HttpSession session = request.getSession();
 		PrintWriter printWriter =null;
@@ -169,7 +173,8 @@ public class UserController{
 		try {
 			printWriter = response.getWriter();
 			if (session.getAttribute("username") != null) {
-				HibernateGymDAO.getInstance().deleteUser(userName); // TODO: check where should userName should come from. 
+				String userName = (String) session.getAttribute("username");
+				HibernateGymDAO.getInstance().deleteUser(userName); //done TODO: check where should userName should come from. 
 				session.invalidate();
 				printWriter.println("The user was deleted successfully");
 

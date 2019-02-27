@@ -16,6 +16,7 @@ public class User {
 	// user will not have the ability to choose his id and the server will generate one for him.
 	private Integer id;
 	
+	
 	@Column(name = "username", length=20, nullable=false, unique=true)
 	private String userName;	
 	

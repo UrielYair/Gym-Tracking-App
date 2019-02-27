@@ -11,11 +11,17 @@
 <p>Activity can be only legs chest or back<p/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/add">
 
-	Activity name: <input type="text" name="activityName" />
+	Exercise name: <input type="text" name="exercise_name" />
 	<br/>
-	Number of sets: <input type="text" name="numberOfSets" />
+	Amount of sets: <input type="text" name="amount_of_sets" />
 	<br/>
-	Number of repeats in each set: <input type="text" name="numberOfRepeat" />
+	Repeats: <input type="text" name="repeats" />
+	<br/>
+	Weight: <input type="text" name="weight" />
+	<br/>
+	Duration: <input type="text" name="duration" />
+	<br/>
+	Type: <input type="text" name="type" />
 	<br/>
 	<input type=submit />
 

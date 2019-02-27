@@ -44,19 +44,36 @@ public class Utilities {
 	public Activity createActivityFromRequest(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		Activity activity = null;
-		Integer userId = (Integer) session.getAttribute("id");
-		String userName = getUserNameByID(userId); // querying the users table in the database.
-		String activityName = request.getParameter("activityName");
-		Date workoutDate = new Date();
-		Integer amountOfSets = Integer.parseInt(request.getParameter("numberOfSets"));
-		Integer amountOfRepeatition = Integer.parseInt(request.getParameter("activityRepeatitions"));
+		String userName = (String) session.getAttribute("userName");
+		String exercise_name = request.getParameter("exercise_name");
+		//Date workoutDate = new Date();
+		String workoutDate = dateToString();
+		Integer amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
+		Integer amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
 		float weight = Float.parseFloat(request.getParameter("weight"));
-		float duration = Float.parseFloat(request.getParameter("activityDuration"));
-		String type = request.getParameter("activityType");
-		activity = new Activity(userName, activityName, workoutDate, amountOfSets, amountOfRepeatition, weight,
+		float duration = Float.parseFloat(request.getParameter("duration"));
+		String type = request.getParameter("type");
+		activity = new Activity(userName, exercise_name, workoutDate, amountOfSets, amountOfRepeatition, weight,
 				duration, type);
 		return activity;
 
+	}
+	
+	private String dateToString()
+	{
+		Date date = new Date();
+		String year = Integer.toString(date.getYear());
+		String month = Integer.toString(date.getMonth());
+		String day = Integer.toString(date.getDate());
+		
+		/*StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(day);
+		stringBuilder.append("/");
+		stringBuilder.append(month);
+		stringBuilder.append("/");
+		stringBuilder.append(year);*/
+		
+		return day + "/" + month + "/" + year;
 	}
 
 }

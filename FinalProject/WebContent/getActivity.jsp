@@ -11,7 +11,9 @@
 <p>Activity can be only legs chest or back<p/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/get">
 
-	Activity name: <input type="text" name="activityName" />
+	Exercise name: <input type="text" name="exercise_name" />
+	<br/>
+	Date of the exercise: <input type="text" name="exerciseDate" />
 	<br/>
 	<input type=submit />
 
