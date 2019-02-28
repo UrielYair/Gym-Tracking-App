@@ -29,9 +29,9 @@ public class Activity{
 	@Column(name = "amount_of_repeatition", length=2, nullable=true)
 	private Integer amountOfRepeatition;
 	@Column(name = "weights", precision=2, nullable=true)
-	private float weight;
+	private Float weight;
 	@Column(name = "duration", precision=2, nullable=true)
-	private float duration;
+	private Float duration;
 	@Column(name = "exercise_type", length=20, nullable=false)
 	private String type; // TODO: consider changing to enum.
 	
@@ -128,13 +128,13 @@ public class Activity{
 	public float getWeight() {
 		return weight;
 	}
-	public void setWeight(float weight) {
+	public void setWeight(Float weight) {
 		this.weight = weight;
 	}
 	public float getDuration() {
 		return duration;
 	}
-	public void setDuration(float duration) {
+	public void setDuration(Float duration) {
 		this.duration = duration;
 	}
 	public String getType() {

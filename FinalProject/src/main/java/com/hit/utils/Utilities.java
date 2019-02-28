@@ -54,22 +54,22 @@ public class Utilities {
 		//Date workoutDate = new Date();
 		String workoutDate = dateToString();
 		Integer amountOfSets = null;
-		if(request.getParameter("amount_of_sets") != null)
+		if(request.getParameter("amount_of_sets") != "")
 		{
 			amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
 		}
 		Integer amountOfRepeatition = null;
-		if(request.getParameter("repeats") != null)
+		if(request.getParameter("repeats") != "")
 		{
 			amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
 		}
-		float weight = (Float) null;
-		if(request.getParameter("weight") != null)
+		Float weight = null;
+		if(request.getParameter("weight") != "")
 		{
 			weight = Float.parseFloat(request.getParameter("weight"));
 		}
-		float duration = (Float) null;
-		if(request.getParameter("duration") != null)
+		Float duration = null;
+		if(request.getParameter("duration") != "")
 			{
 			duration = Float.parseFloat(request.getParameter("duration"));
 			}
@@ -83,8 +83,8 @@ public class Utilities {
 	private static String dateToString()
 	{
 		Date date = new Date();
-		String year = Integer.toString(date.getYear());
-		String month = Integer.toString(date.getMonth());
+		String year = Integer.toString(date.getYear()) + 1900; // getYear Returns a value that is the result of subtracting 1900 from the year that contains or begins with the instant in time represented by this Date object, as interpreted in the local time zone.
+		String month = Integer.toString(date.getMonth()) + 1; // returned is between 0 and 11,with the value 0 representing January.
 		String day = Integer.toString(date.getDate());
 		
 		/*StringBuilder stringBuilder = new StringBuilder();
