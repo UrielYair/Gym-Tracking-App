@@ -19,50 +19,62 @@ public class ActivityController {
 	private InputValidator inputValidator;
 	private PrintWriter printWriter;
 	private HibernateGymDAO hibernateGymDAO;
-	private Activity activity; // TODO: consider removing. should not be a member of a controller. should be instantiated separately each time needed.
+	private Activity activity; // TODO: consider removing. should not be a member of a controller. should be
+								// instantiated separately each time needed.
 	private Utilities utilities;
-	
+
 	public ActivityController() {
 		this.printWriter = null;
 		this.hibernateGymDAO = HibernateGymDAO.getInstance();
 		this.activity = null;
+		this.inputValidator = new InputValidator();
 	}
 
 	// TODO: Done, need to check
 	public void add(HttpServletRequest request, HttpServletResponse response, String str) {
-		
-		/* *
-		 * The method is responsible for getting input parameters and validate them.
-		 * Right after validation succeeded, an Activity object will be created and then will be saved into the DB using Hibernate.
+
+		/*
+		 * * The method is responsible for getting input parameters and validate them.
+		 * Right after validation succeeded, an Activity object will be created and then
+		 * will be saved into the DB using Hibernate.
 		 * 
-		 *  Notes:
-		 *  - In any phase the program will write logs for further inspection.
-		 *  - In case of an error, adding will be canceled.
-		 * */
-		
+		 * Notes: - In any phase the program will write logs for further inspection. -
+		 * In case of an error, adding will be canceled.
+		 */
+
 		try {
 			printWriter = response.getWriter();
-			
-			if (inputValidator.activityInputValidation(request)) {
-				// Validation succeeded, adding attempt:
-				activity = utilities.createActivityFromRequest(request);
-				LOGGER.info("Input is valid, going to add");
-				
-				if (hibernateGymDAO.addActivity(activity)) { 
-					LOGGER.info("Activity has been added");
-					printWriter.println("added successfully");
+
+			HttpSession session = request.getSession();
+			if (session.getAttribute("userName") == null) {
+
+				LOGGER.info("user is not logged in");
+				printWriter.println("you are not logged in");
+
+			} else {
+
+				LOGGER.info("user is logged in");
+				if (inputValidator.activityInputValidation(request)) {
+					// Validation succeeded, adding attempt:
+					activity = utilities.createActivityFromRequest(request);
+					LOGGER.info("Input is valid, going to add");
+
+					if (hibernateGymDAO.addActivity(activity)) {
+						LOGGER.info("Activity has been added");
+						printWriter.println("added successfully");
+					} else {
+						LOGGER.info("Activity already exist");
+						printWriter.println("activity already exist");
+					}
+
 				} else {
-					LOGGER.info("Activity already exist");
-					printWriter.println("activity already exist");
+					// Validation fails:
+					LOGGER.info("Activity is not valid");
+					printWriter.println("activity is not valid");
 				}
-				
-			} 
-			else {
-				// Validation fails:
-				LOGGER.info("Activity is not valid");
-				printWriter.println("activity is not valid");
+
 			}
-			
+
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} finally {
@@ -73,39 +85,51 @@ public class ActivityController {
 
 	// TODO: Done, need to check
 	public void update(HttpServletRequest request, HttpServletResponse response, String str) {
-		
-		/* * 
-		 * Method for update existing activity in DB.
-		 * The method will validate parameters, create Activity object and then,
-		 * try to update the existing one in the DB using Hibernate, if exist.
+
+		/*
+		 * * Method for update existing activity in DB. The method will validate
+		 * parameters, create Activity object and then, try to update the existing one
+		 * in the DB using Hibernate, if exist.
 		 * 
-		 * Notes:
-		 *  - In any phase the program will write logs for further inspection.
-		 *  - In case of an error, updating will be canceled.
-		 * */
-		
+		 * Notes: - In any phase the program will write logs for further inspection. -
+		 * In case of an error, updating will be canceled.
+		 */
+
 		LOGGER.info("Trying to update username");
 
 		try {
 			printWriter = response.getWriter();
-		
-			if (inputValidator.inputValidation(activity)) { // TODO: Verify where activity comes from, maybe [activity = utilities.createActivityFromRequest(request);] needed.
 
-				// Validation succeeded, updating attempt:
-				LOGGER.info("Input is valid, trying to update.");
-				if (hibernateGymDAO.updateActivity(activity)) {
-					LOGGER.info("Activity has been updated");
-					printWriter.println("added successfully");
-				} 
-				else {
-					LOGGER.info("Activity cannot be updated");
-					printWriter.println("activity cannot be updated");
-				}
-				
+			HttpSession session = request.getSession();
+			if (session.getAttribute("userName") == null) {
+
+				LOGGER.info("user is not logged in");
+				printWriter.println("you are not logged in");
+
 			} else {
-				// Validation fails:
-				LOGGER.info("Activity is not valid");
-				printWriter.println("activity is not valid");
+
+				LOGGER.info("user is logged in");
+
+				if (inputValidator.inputValidation(activity)) { // TODO: Verify where activity comes from, maybe
+																// [activity =
+																// utilities.createActivityFromRequest(request);]
+																// needed.
+
+					// Validation succeeded, updating attempt:
+					LOGGER.info("Input is valid, trying to update.");
+					if (hibernateGymDAO.updateActivity(activity)) {
+						LOGGER.info("Activity has been updated");
+						printWriter.println("added successfully");
+					} else {
+						LOGGER.info("Activity cannot be updated");
+						printWriter.println("activity cannot be updated");
+					}
+
+				} else {
+					// Validation fails:
+					LOGGER.info("Activity is not valid");
+					printWriter.println("activity is not valid");
+				}
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -117,38 +141,51 @@ public class ActivityController {
 
 	public void delete(HttpServletRequest request, HttpServletResponse response, String str) throws Exception {
 
-		/* * 
-		 * Method for delete existing activity in DB.
-		 * The method will validate parameters, create Activity object and then,
-		 * try to remove the existing one in the DB using Hibernate, if exist.
+		/*
+		 * * Method for delete existing activity in DB. The method will validate
+		 * parameters, create Activity object and then, try to remove the existing one
+		 * in the DB using Hibernate, if exist.
 		 * 
-		 * Notes:
-		 *  - In any phase the program will write logs for further inspection.
-		 *  - In case of an error, deleting will be canceled.
-		 * */
+		 * Notes: - In any phase the program will write logs for further inspection. -
+		 * In case of an error, deleting will be canceled.
+		 */
+
 		
-		printWriter = response.getWriter();
-		String activityName = request.getParameter("activityName");
-		String userName = request.getParameter("username");
 
 		try {
 
-			if (inputValidator.inputValidation(activity)) { // TODO: verify where activity comes from.
+			printWriter = response.getWriter();
+			
+			HttpSession session = request.getSession();
+			if (session.getAttribute("userName") == null) {
 
-				// Validation succeeded, deleting attempt:
-				LOGGER.info("Input is valid, going to update");
-				if (hibernateGymDAO.deleteActivity(userName, activityName)) {
-					LOGGER.info("Activity has been deleted");
-					printWriter.println("deleted successfully");
-				} else {
-					LOGGER.info("Activity cannot be deleted");
-					printWriter.println("activity cannot be deleted");
-				}
-				
+				LOGGER.info("user is not logged in");
+				printWriter.println("you are not logged in");
+
 			} else {
-				// Validation fails:
-				LOGGER.info("Activity is not valid");
-				printWriter.println("activity is not valid");
+
+				LOGGER.info("user is logged in");
+
+				String activityName = request.getParameter("activityName");
+				String userName = request.getParameter("username");
+				
+				if (inputValidator.inputValidation(activity)) { // TODO: verify where activity comes from.
+
+					// Validation succeeded, deleting attempt:
+					LOGGER.info("Input is valid, going to update");
+					if (hibernateGymDAO.deleteActivity(userName, activityName)) {
+						LOGGER.info("Activity has been deleted");
+						printWriter.println("deleted successfully");
+					} else {
+						LOGGER.info("Activity cannot be deleted");
+						printWriter.println("activity cannot be deleted");
+					}
+
+				} else {
+					// Validation fails:
+					LOGGER.info("Activity is not valid");
+					printWriter.println("activity is not valid");
+				}
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -163,11 +200,11 @@ public class ActivityController {
 
 		// TODO: Check the followings:
 		// is 'str' variable really needed?
-		
+
 		PrintWriter writer = response.getWriter();
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		
+
 		if (username == null) {
 			// TODO: is it even possible? - maybe should be removed.
 			writer.println("you are not connected!");
@@ -184,7 +221,11 @@ public class ActivityController {
 			return;
 		}
 
-		Activity activity = hibernateGymDAO.getActivity(username , activityName , activityDate); // TODO: check if activity name is enough for retrieving a specific activity from the DB.
+		Activity activity = hibernateGymDAO.getActivity(username, activityName, activityDate); // TODO: check if
+																								// activity name is
+																								// enough for retrieving
+																								// a specific activity
+																								// from the DB.
 		// in other words, check the key of activity table.
 		writer.println(activity.toString());
 

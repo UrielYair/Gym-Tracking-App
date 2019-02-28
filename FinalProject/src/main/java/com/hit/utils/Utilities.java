@@ -41,17 +41,38 @@ public class Utilities {
 		return null;
 	}
 
-	public Activity createActivityFromRequest(HttpServletRequest request){
+	public static Activity createActivityFromRequest(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		Activity activity = null;
+		
+		//to do: check if user logged in
+		//do validation of the input and if some of the inputs are null
+		//
+		
 		String userName = (String) session.getAttribute("userName");
 		String exercise_name = request.getParameter("exercise_name");
 		//Date workoutDate = new Date();
 		String workoutDate = dateToString();
-		Integer amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
-		Integer amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
-		float weight = Float.parseFloat(request.getParameter("weight"));
-		float duration = Float.parseFloat(request.getParameter("duration"));
+		Integer amountOfSets = null;
+		if(request.getParameter("amount_of_sets") != null)
+		{
+			amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
+		}
+		Integer amountOfRepeatition = null;
+		if(request.getParameter("repeats") != null)
+		{
+			amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
+		}
+		float weight = (Float) null;
+		if(request.getParameter("weight") != null)
+		{
+			weight = Float.parseFloat(request.getParameter("weight"));
+		}
+		float duration = (Float) null;
+		if(request.getParameter("duration") != null)
+			{
+			duration = Float.parseFloat(request.getParameter("duration"));
+			}
 		String type = request.getParameter("type");
 		activity = new Activity(userName, exercise_name, workoutDate, amountOfSets, amountOfRepeatition, weight,
 				duration, type);
@@ -59,7 +80,7 @@ public class Utilities {
 
 	}
 	
-	private String dateToString()
+	private static String dateToString()
 	{
 		Date date = new Date();
 		String year = Integer.toString(date.getYear());
