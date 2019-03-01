@@ -55,6 +55,7 @@ public class UserController{
 				if (HibernateGymDAO.getInstance().addUser(new User(userName, password))) {
 					LOGGER.info("User added succesfully");
 					printWriter.println("Registration completed successfully");
+					request.getRequestDispatcher("/login.jsp").forward(request, response);
 				} 
 				else {
 					LOGGER.info("User was not added");
@@ -114,6 +115,8 @@ public class UserController{
 				else {
 					LOGGER.info(userName + " entered wrong password.");
 					printWriter.println("Wrong password, please retry");
+					
+					request.getRequestDispatcher("/login.jsp").forward(request, response);
 				}
 			} 
 			
