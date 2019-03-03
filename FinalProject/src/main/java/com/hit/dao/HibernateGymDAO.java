@@ -42,6 +42,11 @@ public class HibernateGymDAO implements IGymDAO {
 		
 	}
 
+	public SessionFactory getFactory() {
+		return factory;
+	}
+	
+
 	@Override
 	public boolean activityExist(Activity activity) {
 		// boolean isExist = false;
@@ -95,8 +100,6 @@ public class HibernateGymDAO implements IGymDAO {
 
 		return hasAdded;
 	}
-
-
 
 	@Override
 	public boolean deleteActivity(String userName, String activityName) {
