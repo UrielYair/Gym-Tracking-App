@@ -10,8 +10,8 @@
 
 <h1>Welcome to My Gym</h1>
 
-<button type = "button" name = "registerButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/login'">Register</button>
-<button type = "button" name = "loginButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/login'">Login</button>
+<button type = "button" name = "registerButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToRegister'">Register</button>
+<button type = "button" name = "loginButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToLogin'">Login</button>
 
 </body>
 </html>
