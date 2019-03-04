@@ -8,12 +8,11 @@
 </head>
 <body>
 
-<p>${message}</p>
 
 <button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
 <br/>
 <br/>
-<button type = "button" name = "acountManagementButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToAcountManagement'">Acount Management</button>
-<button type = "button" name = "ActivitiesButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToActivities'">Activities</button>
+<button type = "button" name = "deleteUserButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/deleteUser'">Delete User</button>
+
 </body>
 </html>

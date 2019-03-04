@@ -70,4 +70,42 @@ public class NavigationController {
 			printWriter = null;
 		}
 	}
+	
+	public void goToActivities(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
+		try {
+			this.printWriter = httpServletResponse.getWriter();
+			LOGGER.info("Redirect to Login page");
+			httpServletRequest.getRequestDispatcher("/activities.jsp").forward(httpServletRequest, httpServletResponse);
+		} catch (IOException ioException) {
+			LOGGER.fatal("IOExseprion");
+			printWriter.println("IOExseprion");
+		}catch(ServletException servletException) {
+			LOGGER.fatal("ServletException");
+			printWriter.println("ServletException");
+		}catch(Exception exception) {
+			LOGGER.fatal("Unknown exception");
+			printWriter.println("Unknown exception");
+		} finally {
+			printWriter = null;
+		}
+	}
+	
+	public void goToAcountManagement(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
+		try {
+			this.printWriter = httpServletResponse.getWriter();
+			LOGGER.info("Redirect to Login page");
+			httpServletRequest.getRequestDispatcher("/acountManagement.jsp").forward(httpServletRequest, httpServletResponse);
+		} catch (IOException ioException) {
+			LOGGER.fatal("IOExseprion");
+			printWriter.println("IOExseprion");
+		}catch(ServletException servletException) {
+			LOGGER.fatal("ServletException");
+			printWriter.println("ServletException");
+		}catch(Exception exception) {
+			LOGGER.fatal("Unknown exception");
+			printWriter.println("Unknown exception");
+		} finally {
+			printWriter = null;
+		}
+	}
 }
