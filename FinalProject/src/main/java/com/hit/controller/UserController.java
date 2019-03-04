@@ -134,7 +134,7 @@ public class UserController {
 		}
 	}
 
-	public void logout(HttpServletRequest request, HttpServletResponse response) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, String str) {
 		HttpSession session = request.getSession();
 		PrintWriter printWriter = null;
 
@@ -173,16 +173,16 @@ public class UserController {
 
 		try {
 			printWriter = response.getWriter();
-			if (session.getAttribute("username") != null) {
-				String userName = (String) session.getAttribute("username");
+			if (session.getAttribute("userName") != null) {
+				String userName = (String) session.getAttribute("userName");
 				HibernateGymDAO.getInstance().deleteUser(userName);
 				session.invalidate();
-				LOGGER.fatal("The user was deleted successfully");
+				LOGGER.info("The user was deleted successfully");
 				request.setAttribute("message", "The user was deleted successfully");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 			} else {
-				LOGGER.fatal("user is not connected!");
+				LOGGER.info("user is not connected!");
 				printWriter.println("you are not connected!");// if user is not connected he should not reach the user delete button
 			}
 

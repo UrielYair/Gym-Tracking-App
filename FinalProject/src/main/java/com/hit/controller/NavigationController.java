@@ -14,7 +14,7 @@ public class NavigationController {
 	private PrintWriter printWriter;
 
 
-	public void goToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+	public void goToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
 		try {
 			this.printWriter = httpServletResponse.getWriter();
 			LOGGER.info("Redirect to Login page");
@@ -33,7 +33,7 @@ public class NavigationController {
 		}
 	}
 
-	public void goToRegister(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+	public void goToRegister(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
 		try {
 			this.printWriter = httpServletResponse.getWriter();
 			LOGGER.info("Redirect to Login page");
@@ -52,7 +52,7 @@ public class NavigationController {
 		}
 	}
 	
-	public void goToHome(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+	public void goToHome(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
 		try {
 			this.printWriter = httpServletResponse.getWriter();
 			LOGGER.info("Redirect to Login page");

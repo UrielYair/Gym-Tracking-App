@@ -282,7 +282,8 @@ public class HibernateGymDAO implements IGymDAO {
 		boolean wasDeleted = false;
 		
 		try {
-			user = (User) session.get(User.class, userName);
+			//user = (User) session.get(User.class, userName);
+			user = getUser(userName);
 			
 			if (user != null) {
 				((org.hibernate.Session) session).beginTransaction();

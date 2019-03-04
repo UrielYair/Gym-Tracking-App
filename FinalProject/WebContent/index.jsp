@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<p>${message}</p>
+
 <h1>Welcome to My Gym</h1>
 
 <button type = "button" name = "registerButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToRegister'">Register</button>
