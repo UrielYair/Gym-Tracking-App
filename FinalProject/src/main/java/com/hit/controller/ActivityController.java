@@ -187,6 +187,7 @@ public class ActivityController {
 					printWriter.println("activity is not valid");
 				}
 			}
+			
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} finally {

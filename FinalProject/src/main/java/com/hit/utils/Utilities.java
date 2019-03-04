@@ -1,6 +1,11 @@
 package com.hit.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -82,19 +87,10 @@ public class Utilities {
 	
 	private static String dateToString()
 	{
-		Date date = new Date();
-		String year = Integer.toString(date.getYear()) + 1900; // getYear Returns a value that is the result of subtracting 1900 from the year that contains or begins with the instant in time represented by this Date object, as interpreted in the local time zone.
-		String month = Integer.toString(date.getMonth()) + 1; // returned is between 0 and 11,with the value 0 representing January.
-		String day = Integer.toString(date.getDate());
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		/*StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(day);
-		stringBuilder.append("/");
-		stringBuilder.append(month);
-		stringBuilder.append("/");
-		stringBuilder.append(year);*/
-		
-		return day + "/" + month + "/" + year;
+		return dateFormat.format(date);
 	}
 
 }

@@ -58,7 +58,7 @@ public class Activity{
 		super();
 	}
 	public Activity(String userName, String activityName, String workoutDate, Integer amountOfSets,
-			Integer amountOfRepeatition, float weight, float duration, String type) {
+			Integer amountOfRepeatition, Float weight, Float duration, String type) {
 		super();
 		
 		//you should set some id for the use of hibernate  

@@ -11,13 +11,15 @@
 <button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
 <br/>
 <br/>
-<button type = "button" name = "addActivityButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Activity/add'">Add Exercise</button>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
+<button type="submit" name ="button" value = "addActivity">Add Exercise</button>
 <br/>
 <br/>
-<button type = "button" name = "deleteActivityButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Activity/delete'">Delete Exercise</button>
+<button type="submit" name ="button" value = "deleteActivity">Delete Exercise</button>
 <br/>
 <br/>
-<button type = "button" name = "updateActivityButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Activity/update'">Update Exercise</button>
+<button type="submit" name ="button" value = "updateActivity">Update Exercise</button>
+</form>
 
 </body>
 </html>

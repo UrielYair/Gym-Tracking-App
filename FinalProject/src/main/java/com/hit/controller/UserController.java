@@ -91,7 +91,8 @@ public class UserController {
 		LOGGER.info("Login user - userName = " + userName + " password = " + password);
 
 		try {
-
+			HttpSession session = request.getSession();
+			session.removeAttribute("message");
 			if (!inputValidator.usernameValidation(userName) || !inputValidator.passwordValidation(password)) {
 				LOGGER.info("Input is not valid");
 				request.setAttribute("message", "Input is not valid");
@@ -101,9 +102,9 @@ public class UserController {
 				User user = HibernateGymDAO.getInstance().getUser(userName);
 
 				if (user != null) {
-
+					
 					if (user.getPassword().equals(password)) {
-						HttpSession session = request.getSession();
+						
 						session.setAttribute("userName", userName);
 						session.setMaxInactiveInterval(300); // 5 min timeout - 300 sec
 
@@ -113,7 +114,12 @@ public class UserController {
 					} else {
 						LOGGER.info(userName + " entered wrong password.");
 						request.setAttribute("message", "Wrong password, please retry");
+						
 						request.getRequestDispatcher("/login.jsp").forward(request, response);
+						//session.setAttribute("message", "Wrong password, please retry");
+						
+						//response.sendRedirect(request.getContextPath()+"/login.jsp");
+						
 					}
 				}
 

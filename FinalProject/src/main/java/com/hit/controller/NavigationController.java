@@ -1,11 +1,8 @@
 package com.hit.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -24,14 +21,19 @@ public class NavigationController {
 	}
 
 	public void goTo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
-		boolean illegalButton = false;
 		try {
-			buttonValue = httpServletRequest.getParameter("button");
-			if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
-				LOGGER.info(buttonValue + "button has been pressed");
-				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/" + buttonValue + ".jsp");
+			HttpSession session = httpServletRequest.getSession();
+			if (session.getAttribute("userName") != null) {
+				buttonValue = httpServletRequest.getParameter("button");
+				if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
+					LOGGER.info(buttonValue + "button has been pressed");
+					httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/" + buttonValue + ".jsp");
+				} else {
+					LOGGER.info("button was not pressed");
+				}
 			} else {
-				LOGGER.info("button was not pressed");
+				LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
+				//printWriter.println("you are not connected!");
 			}
 		} catch (Exception exception) {
 			LOGGER.fatal("Unknown message");

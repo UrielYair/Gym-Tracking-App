@@ -11,9 +11,9 @@
 <p>${message}</p>
 
 <h1>Welcome to My Gym</h1>
-
-<button type = "button" name = "registerButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToRegister'">Register</button>
-<button type = "button" name = "loginButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToLogin'">Login</button>
-
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
+<button type="submit" name ="button" value = "register" >Register</button>
+<button type="submit" name ="button" value = "login" >Login</button>
+</form>
 </body>
 </html>
