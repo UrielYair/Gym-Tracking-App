@@ -9,103 +9,34 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.hit.utils.InputValidator;
+
 public class NavigationController {
 	private static final Logger LOGGER = Logger.getLogger(NavigationController.class.getSimpleName());
-	private PrintWriter printWriter;
+	private final String[] legalButtons = { "login", "register", "acountManagement", "activities", "addActivity",
+			"deleteActivity", "updateActivity" };
 
+	private InputValidator inputValidator;
+	private String buttonValue;
 
-	public void goToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
-		try {
-			this.printWriter = httpServletResponse.getWriter();
-			LOGGER.info("Redirect to Login page");
-			httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);
-		} catch (IOException ioException) {
-			LOGGER.fatal("IOExseprion");
-			printWriter.println("IOExseprion");
-		}catch(ServletException servletException) {
-			LOGGER.fatal("ServletException");
-			printWriter.println("ServletException");
-		}catch(Exception exception) {
-			LOGGER.fatal("Unknown exception");
-			printWriter.println("Unknown exception");
-		} finally {
-			printWriter = null;
-		}
+	public NavigationController() {
+		this.inputValidator = new InputValidator();
 	}
 
-	public void goToRegister(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
+	public void goTo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
+		boolean illegalButton = false;
 		try {
-			this.printWriter = httpServletResponse.getWriter();
-			LOGGER.info("Redirect to Login page");
-			httpServletRequest.getRequestDispatcher("/register.jsp").forward(httpServletRequest, httpServletResponse);
-		} catch (IOException ioException) {
-			LOGGER.fatal("IOExseprion");
-			printWriter.println("IOExseprion");
-		}catch(ServletException servletException) {
-			LOGGER.fatal("ServletException");
-			printWriter.println("ServletException");
-		}catch(Exception exception) {
-			LOGGER.fatal("Unknown exception");
-			printWriter.println("Unknown exception");
+			buttonValue = httpServletRequest.getParameter("button");
+			if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
+				LOGGER.info(buttonValue + "button has been pressed");
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/" + buttonValue + ".jsp");
+			} else {
+				LOGGER.info("button was not pressed");
+			}
+		} catch (Exception exception) {
+			LOGGER.fatal("Unknown message");
 		} finally {
-			printWriter = null;
 		}
 	}
-	
-	public void goToHome(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
-		try {
-			this.printWriter = httpServletResponse.getWriter();
-			LOGGER.info("Redirect to Login page");
-			httpServletRequest.getRequestDispatcher("/home.jsp").forward(httpServletRequest, httpServletResponse);
-		} catch (IOException ioException) {
-			LOGGER.fatal("IOExseprion");
-			printWriter.println("IOExseprion");
-		}catch(ServletException servletException) {
-			LOGGER.fatal("ServletException");
-			printWriter.println("ServletException");
-		}catch(Exception exception) {
-			LOGGER.fatal("Unknown exception");
-			printWriter.println("Unknown exception");
-		} finally {
-			printWriter = null;
-		}
-	}
-	
-	public void goToActivities(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
-		try {
-			this.printWriter = httpServletResponse.getWriter();
-			LOGGER.info("Redirect to Login page");
-			httpServletRequest.getRequestDispatcher("/activities.jsp").forward(httpServletRequest, httpServletResponse);
-		} catch (IOException ioException) {
-			LOGGER.fatal("IOExseprion");
-			printWriter.println("IOExseprion");
-		}catch(ServletException servletException) {
-			LOGGER.fatal("ServletException");
-			printWriter.println("ServletException");
-		}catch(Exception exception) {
-			LOGGER.fatal("Unknown exception");
-			printWriter.println("Unknown exception");
-		} finally {
-			printWriter = null;
-		}
-	}
-	
-	public void goToAcountManagement(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
-		try {
-			this.printWriter = httpServletResponse.getWriter();
-			LOGGER.info("Redirect to Login page");
-			httpServletRequest.getRequestDispatcher("/acountManagement.jsp").forward(httpServletRequest, httpServletResponse);
-		} catch (IOException ioException) {
-			LOGGER.fatal("IOExseprion");
-			printWriter.println("IOExseprion");
-		}catch(ServletException servletException) {
-			LOGGER.fatal("ServletException");
-			printWriter.println("ServletException");
-		}catch(Exception exception) {
-			LOGGER.fatal("Unknown exception");
-			printWriter.println("Unknown exception");
-		} finally {
-			printWriter = null;
-		}
-	}
+
 }

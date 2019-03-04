@@ -7,13 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 <p>${message}</p>
-
-<button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
+<button type="button" name="logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
 <br/>
 <br/>
-<button type = "button" name = "acountManagementButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToAcountManagement'">Acount Management</button>
-<button type = "button" name = "ActivitiesButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/Navigation/goToActivities'">Activities</button>
+<button type="submit" name ="button" value ="acountManagement">Acount Management</button>
+<button type="submit" name ="button" value ="activities">Activities</button>
+</form>
 </body>
 </html>

@@ -64,6 +64,15 @@ public class InputValidator {
 		return isValid;
 	}
 	
+	public boolean buttonValidator(String[] legalButtons, String buttonName) {
+		for(String button : legalButtons) {
+			if(button.equals(buttonName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	// To do
 	public boolean activityInputValidation(HttpServletRequest request){
 		return true;
