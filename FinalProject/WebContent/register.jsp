@@ -17,5 +17,8 @@
 	<input type=submit />
 
 </form>
+
+<p>${message}</p>
+
 </body>
 </html>

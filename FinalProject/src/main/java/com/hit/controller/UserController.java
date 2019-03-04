@@ -109,7 +109,7 @@ public class UserController {
 
 						LOGGER.info(userName + " Logged on successfully.");
 						request.setAttribute("message", "Login successfully");
-						request.getRequestDispatcher("/login.jsp").forward(request, response);// home page
+						request.getRequestDispatcher("/home.jsp").forward(request, response);
 					} else {
 						LOGGER.info(userName + " entered wrong password.");
 						request.setAttribute("message", "Wrong password, please retry");
@@ -145,9 +145,10 @@ public class UserController {
 															// here.
 				session.invalidate();
 				LOGGER.info("Logout successfully"); // TODO: fix string.
-				printWriter.println("Logout successfully");
+				request.setAttribute("message", "Logout successfully");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
-				LOGGER.info("you are not connected!");
+				LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
 				printWriter.println("you are not connected!");
 			}
 		}
@@ -174,13 +175,15 @@ public class UserController {
 			printWriter = response.getWriter();
 			if (session.getAttribute("username") != null) {
 				String userName = (String) session.getAttribute("username");
-				HibernateGymDAO.getInstance().deleteUser(userName); // done TODO: check where should userName should
-																	// come from.
+				HibernateGymDAO.getInstance().deleteUser(userName);
 				session.invalidate();
-				printWriter.println("The user was deleted successfully");
+				LOGGER.fatal("The user was deleted successfully");
+				request.setAttribute("message", "The user was deleted successfully");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 			} else {
-				printWriter.println("you are not connected!");
+				LOGGER.fatal("user is not connected!");
+				printWriter.println("you are not connected!");// if user is not connected he should not reach the user delete button
 			}
 
 		}
