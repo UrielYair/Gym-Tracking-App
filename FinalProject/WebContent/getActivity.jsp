@@ -4,19 +4,29 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Get activity</title>
 </head>
 <body>
 <h1>Get activity</h1>
 <p>Activity can be only legs chest or back<p/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/get">
-
-	Exercise name: <input type="text" name="exercise_name" />
-	<br/>
-	Date of the exercise: <input type="text" name="exerciseDate" />
-	<br/>
-	<input type=submit />
-
+	<table>
+		<tbody>
+			<tr>
+				<td>Exercise name:</td>
+				<td><input type="text" name="exercise_name" size="50" /></td>
+			</tr>
+	
+			<tr>
+				<td>Date of the exercise:</td>
+				<td><input type="text" name="exerciseDate" size="50" /></td>
+			</tr>
+		
+			<tr>
+				<td><input type=submit /></td>
+			</tr>
+		</tbody>
+	</table>
 </form>
 </body>
 </html>

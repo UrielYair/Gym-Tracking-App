@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Delete activity</title>
 </head>
 <body>
 <h1>Delete activity</h1>
