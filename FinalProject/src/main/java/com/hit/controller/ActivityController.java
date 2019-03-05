@@ -50,7 +50,7 @@ public class ActivityController {
 
 				LOGGER.info("user is not logged in");
 				printWriter.println("you are not logged in");
-
+				response.sendRedirect(request.getContextPath() + "/login.jsp");
 			} else {
 
 				LOGGER.info("user is logged in");
@@ -61,16 +61,19 @@ public class ActivityController {
 
 					if (hibernateGymDAO.addActivity(activity)) {
 						LOGGER.info("Activity has been added");
-						printWriter.println("added successfully");
+						//printWriter.println("added successfully");
+						response.sendRedirect(request.getContextPath() + "/activities.jsp");
 					} else {
 						LOGGER.info("Activity already exist");
-						printWriter.println("activity already exist");
+						//printWriter.println("activity already exist");
+						response.sendRedirect(request.getContextPath() + "/activities.jsp");
 					}
 
 				} else {
 					// Validation fails:
 					LOGGER.info("Activity is not valid");
-					printWriter.println("activity is not valid");
+					//printWriter.println("activity is not valid");
+					response.sendRedirect(request.getContextPath() + "/addActivities.jsp");
 				}
 
 			}

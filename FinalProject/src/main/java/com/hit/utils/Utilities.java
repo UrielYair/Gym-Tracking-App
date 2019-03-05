@@ -90,7 +90,7 @@ public class Utilities {
 		LocalDate date = LocalDate.now();
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		return dateFormat.format(date);
+		return dateFormat.format(date).toString();
 	}
 
 }

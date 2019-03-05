@@ -49,15 +49,9 @@ public class HibernateGymDAO implements IGymDAO {
 
 	@Override
 	public boolean activityExist(Activity activity) {
-		// boolean isExist = false;
-		
-		return (getInstance().getActivity(activity.getUserName(), activity.getExerciseName(), activity.getWorkoutDate()) != null);
-		
-		// TODO: why should we log this results?
-		
-		/* 
-		
-		if (getInstance().getActivity(activity.getUserName()) != null) {
+		boolean isExist = false;
+
+		if (getInstance().getActivity(activity.getUserName(), activity.getExerciseName(), activity.getWorkoutDate()) != null) {
 			isExist = true;
 			LOGGER.info("Activity exist");
 		} 
@@ -67,7 +61,6 @@ public class HibernateGymDAO implements IGymDAO {
 
 		return isExist;
 		
-		*/
 	}
 
 	@Override

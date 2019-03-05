@@ -23,17 +23,27 @@ public class NavigationController {
 	public void goTo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String str) {
 		try {
 			HttpSession session = httpServletRequest.getSession();
-			if (session.getAttribute("userName") != null) {
-				buttonValue = httpServletRequest.getParameter("button");
+			buttonValue = httpServletRequest.getParameter("button");
+			if (!buttonValue.equals("login") && !buttonValue.equals("register")) {
+				if (session.getAttribute("userName") != null) {
+					if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
+						LOGGER.info(buttonValue + "button has been pressed");
+						httpServletResponse
+								.sendRedirect(httpServletRequest.getContextPath() + "/" + buttonValue + ".jsp");
+					} else {
+						LOGGER.info("button was not pressed");
+					}
+				} else {
+					LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
+					// printWriter.println("you are not connected!");
+				}
+			} else {
 				if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
 					LOGGER.info(buttonValue + "button has been pressed");
 					httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/" + buttonValue + ".jsp");
 				} else {
 					LOGGER.info("button was not pressed");
 				}
-			} else {
-				LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
-				//printWriter.println("you are not connected!");
 			}
 		} catch (Exception exception) {
 			LOGGER.fatal("Unknown message");
