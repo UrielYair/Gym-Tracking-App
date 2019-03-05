@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Activity{
 
 	// Table structure:
-	// activities(id, user_name, exercise_name, workout_date, amount_of_sets, repeats, weight, duration, type)
+	// activities(activityId, user_name, exercise_name, workout_date, amount_of_sets, amount_of_repeatition, weights, duration, exercise_type)
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -34,24 +34,6 @@ public class Activity{
 	private Float duration;
 	@Column(name = "exercise_type", length=20, nullable=false)
 	private String type; // TODO: consider changing to enum.
-	
-	/*
-	 
-	 before: 
-		@Id
-		@Column(name = "userId", length=10, nullable=false, unique=true)
-		private ActivityId id;
-	
-		@Column(name = "numberOfSets", length = 5, nullable = false)
-		private Integer set;
-	
-		@Column(name = "numberOfRepeat", length = 5, nullable = false)
-		private Integer repeat;
-	*/
-	
-	
-	
-	
 	
 	
 	public Activity() {
