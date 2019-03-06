@@ -9,7 +9,7 @@ public interface IGymDAO {
 
 	public boolean activityExist(Activity activity);
 	public boolean addActivity(Activity activity);
-	public boolean deleteActivity(String userName, String activityName);
+	public boolean deleteActivity(String userName, String exerciseName, String workoutDate);
 	public boolean updateActivity(Activity activity);
 	public Activity getActivity(String userName, String exerciseName, String workoutDate);
 	

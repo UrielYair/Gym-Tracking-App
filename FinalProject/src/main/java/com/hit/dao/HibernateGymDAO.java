@@ -1,8 +1,5 @@
 package com.hit.dao;
 
-import java.util.Date;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -95,23 +92,22 @@ public class HibernateGymDAO implements IGymDAO {
 	}
 
 	@Override
-	public boolean deleteActivity(String userName, String activityName) {
+	public boolean deleteActivity(String userName, String exerciseName, String workoutDate) {
 		
 		Session session = (Session) factory.openSession();
 		Activity activity = null;
-		boolean deletionResult = false;
+		boolean wasDeleted = false;
 		
 		try {
-			((org.hibernate.Session) session).beginTransaction();
-			activity = (Activity) session.get(Activity.class, new ActivityId(activityName)); // TODO: is activityName is enough to differentiate between activities.
-			// ^^ maybe get function should get more inputs.
+			activity = getActivity(userName, exerciseName, workoutDate);
 			
 			if (activity != null) {
+				((org.hibernate.Session) session).beginTransaction();
 				((org.hibernate.Session) session).delete(activity);
 				((org.hibernate.Session) session).getTransaction().commit();
 				LOGGER.info("Activity was deleted"); // TODO: make it more descriptive. which activity was deleted exactly?
+				wasDeleted = true;
 			}
-			deletionResult = true;
 			
 		} 
 		catch (HibernateException hibernateException) {
@@ -122,7 +118,7 @@ public class HibernateGymDAO implements IGymDAO {
 			session.close();
 		}
 		
-		return deletionResult;
+		return wasDeleted;
 	}
 
 	@Override
@@ -135,6 +131,7 @@ public class HibernateGymDAO implements IGymDAO {
 			((org.hibernate.Session) session).update(activity);
 			((org.hibernate.Session) session).getTransaction().commit();
 			LOGGER.info("Activity updated"); // TODO: Make it descriptive. for instance: which activity was updated.
+			wasUpdated = true;
 		} 
 		catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error while activity update!");
@@ -275,7 +272,6 @@ public class HibernateGymDAO implements IGymDAO {
 		boolean wasDeleted = false;
 		
 		try {
-			//user = (User) session.get(User.class, userName);
 			user = getUser(userName);
 			
 			if (user != null) {

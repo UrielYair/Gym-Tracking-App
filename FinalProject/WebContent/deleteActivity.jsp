@@ -10,11 +10,20 @@
 <h1>Delete activity</h1>
 <p>Activity can be only legs chest or back<p/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/delete">
+	<table>
+		<tbody>
+			<tr>
+				<td>Exercise name:</td>
+				<td><input type="text" name="activityName" size="50" /></td>
+			</tr>
+	
+			<tr>
+				<td>Exercise data (dd/MM/yyyy):</td>
+				<td><input type="text" name="activityDate" size="50" /></td>
+			</tr>
 
-	Activity name: <input type="text" name="activityName" />
-	<br/>
-	<input type=submit />
-
+		</tbody>
+	</table>
 </form>
 </body>
 </html>

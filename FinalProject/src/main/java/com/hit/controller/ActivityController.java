@@ -100,6 +100,8 @@ public class ActivityController {
 
 		LOGGER.info("Trying to update username");
 
+		Activity activity = null;
+		
 		try {
 			printWriter = response.getWriter();
 
@@ -113,11 +115,45 @@ public class ActivityController {
 
 				LOGGER.info("user is logged in");
 
-				if (inputValidator.inputValidation(activity)) { // TODO: Verify where activity comes from, maybe
+				String activityName = request.getParameter("activityName");
+				String activityDate = request.getParameter("activityDate");
+				
+				String userName = (String) session.getAttribute("userName");
+				
+				//the validation should be for the parameters no activity
+				//if (inputValidator.inputValidation(activity)) { // TODO: Verify where activity comes from, maybe
 																// [activity =
 																// utilities.createActivityFromRequest(request);]
 																// needed.
-
+					
+				if(true) {//for now until the validation function will be made
+					activity = hibernateGymDAO.getActivity(userName, activityName, activityDate);
+					
+					if(request.getParameter("amount_of_sets") != "")
+					{
+						activity.setAmountOfSets(Integer.parseInt(request.getParameter("amount_of_sets")));
+					}
+					
+					if(request.getParameter("repeats") != "")
+					{
+						activity.setAmountOfRepeatition(Integer.parseInt(request.getParameter("repeats")));
+					}
+					
+					if(request.getParameter("weight") != "")
+					{
+						activity.setWeight(Float.parseFloat(request.getParameter("weight")));
+					}
+				
+					if(request.getParameter("duration") != "")
+					{
+						activity.setDuration(Float.parseFloat(request.getParameter("duration")));
+					}
+					
+					if(request.getParameter("type") != "")
+					{
+						activity.setType(request.getParameter("type"));
+					}
+					
 					// Validation succeeded, updating attempt:
 					LOGGER.info("Input is valid, trying to update.");
 					if (hibernateGymDAO.updateActivity(activity)) {
@@ -170,13 +206,17 @@ public class ActivityController {
 				LOGGER.info("user is logged in");
 
 				String activityName = request.getParameter("activityName");
-				String userName = request.getParameter("username");
+				String activityDate = request.getParameter("activityDate");
 				
-				if (inputValidator.inputValidation(activity)) { // TODO: verify where activity comes from.
-
+				String userName = (String) session.getAttribute("userName");
+				
+				//the validation should be for the parameters no activity
+				//if (inputValidator.inputValidation(activity)) { // TODO: verify where activity comes from.
+				if(true) {//for now until the validation function will be made
+				
 					// Validation succeeded, deleting attempt:
 					LOGGER.info("Input is valid, going to update");
-					if (hibernateGymDAO.deleteActivity(userName, activityName)) {
+					if (hibernateGymDAO.deleteActivity(userName, activityName, activityDate)) {
 						LOGGER.info("Activity has been deleted");
 						printWriter.println("deleted successfully");
 					} else {

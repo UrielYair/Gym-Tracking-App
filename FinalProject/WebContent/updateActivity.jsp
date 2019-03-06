@@ -13,21 +13,40 @@
 		<table>
 			<tbody>
 				<tr>
-					<td>Activity name:</td>
+					<td>Exercise name:</td>
 					<td><input type="text" name="activityName" size="50" /></td>
 				</tr>
 		
 				<tr>
-					<td>Number of sets:</td>
-					<td><input type="text" name="numberOfSets" size="50" /></td>
+					<td>Exercise data (dd/MM/yyyy):</td>
+					<td><input type="text" name="activityDate" size="50" /></td>
 				</tr>
-				
+	
 				<tr>
-					<td>Number of repeats in each set:</td>
-					<td><input type="text" name="numberOfRepeat" size="50" /></td>
-				</tr>
-				
-				<tr>
+				<td>Amount of sets:</td>
+				<td><input type="text" name="amount_of_sets" size="50" /></td>
+			</tr>
+			
+			<tr>
+				<td>Repeats:</td>
+				<td><input type="text" name="repeats" size="50" /></td>
+			</tr>
+
+			<tr>
+				<td>Weight:</td>
+				<td><input type="text" name="weight" size="50" /></td>
+			</tr>
+			
+			<tr>
+				<td>Duration:</td>
+				<td><input type="text" name="duration" size="50" /></td>
+			</tr>
+
+			<tr>
+				<td>Type:</td>
+				<td><input type="text" name="type" size="50" /></td>
+			</tr>
+
 					<td>
 						<input type=submit />
 					</td>
