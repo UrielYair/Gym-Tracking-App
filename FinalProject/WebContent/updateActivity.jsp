@@ -11,11 +11,16 @@
 <p>Activity can be only legs chest or back<p/>
 	<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/update">
 		<table>
-			<tbody>
-				<tr>
-					<td>Exercise name:</td>
-					<td><input type="text" name="activityName" size="50" /></td>
-				</tr>
+			<tr>
+				
+				<td>Exercise Name:</td>
+				<td>
+					<select name="activityName">
+						<option>back</option>
+						<option>legs</option>
+						<option>chest</option>
+					</select>
+			</tr>
 		
 				<tr>
 					<td>Exercise data (dd/MM/yyyy):</td>
@@ -44,13 +49,17 @@
 
 			<tr>
 				<td>Type:</td>
-				<td><input type="text" name="type" size="50" /></td>
+				<td>
+					<input type="radio" name="type" value = "cardio" />Cardio
+					<input type="radio" name="type" value = "anaerobic" />Anaerobic
+				</td>
 			</tr>
 
+			<tr>
 					<td>
 						<input type=submit />
 					</td>
-				</tr>
+			</tr>
 				
 			</tbody>
 		</table>

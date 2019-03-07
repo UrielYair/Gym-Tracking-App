@@ -13,8 +13,13 @@
 	<table>
 		<tbody>
 			<tr>
-				<td>Exercise name:</td>
-				<td><input type="text" name="exercise_name" size="50" /></td>
+				<td>Exercise Name:</td>
+				<td>
+					<select name="exercise_name">
+						<option>back</option>
+						<option>legs</option>
+						<option>chest</option>
+					</select>
 			</tr>
 	
 			<tr>
