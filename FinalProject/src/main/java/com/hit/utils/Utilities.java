@@ -46,50 +46,55 @@ public class Utilities {
 		return null;
 	}
 
-	public static Activity createActivityFromRequest(HttpServletRequest request){
+	public static Activity createActivityFromRequest(HttpServletRequest request, String type) {
 		HttpSession session = request.getSession();
 		Activity activity = null;
-		
-		//to do: check if user logged in
-		//do validation of the input and if some of the inputs are null
+
+		// to do: check if user logged in
+		// do validation of the input and if some of the inputs are null
 		//
-		
+
 		String userName = (String) session.getAttribute("userName");
-		String exercise_name = request.getParameter("exercise_name");
-		//Date workoutDate = new Date();
+		String exercise_name = null;
 		String workoutDate = dateToString();
+
 		Integer amountOfSets = null;
-		if(request.getParameter("amount_of_sets") != "")
-		{
-			amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
-		}
 		Integer amountOfRepeatition = null;
-		if(request.getParameter("repeats") != "")
-		{
-			amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
-		}
 		Float weight = null;
-		if(request.getParameter("weight") != "")
-		{
-			weight = Float.parseFloat(request.getParameter("weight"));
-		}
 		Float duration = null;
-		if(request.getParameter("duration") != "")
-			{
-			duration = Float.parseFloat(request.getParameter("duration"));
+
+		if (type.equals("Anaerobic")) {
+			exercise_name = request.getParameter("exercise_name");
+			
+			if (request.getParameter("amount_of_sets") != "") {
+				amountOfSets = Integer.parseInt(request.getParameter("amount_of_sets"));
 			}
-		String type = request.getParameter("type");
+
+			if (request.getParameter("repeats") != "") {
+				amountOfRepeatition = Integer.parseInt(request.getParameter("repeats"));
+			}
+
+			if (request.getParameter("weight") != "") {
+				weight = Float.parseFloat(request.getParameter("weight"));
+			}
+		} else if (type.equals("Cardio")) {
+			exercise_name = "cardio";
+			
+			if (request.getParameter("duration") != "") {
+				duration = Float.parseFloat(request.getParameter("duration"));
+			}
+		}
+		//String type = request.getParameter("type");
 		activity = new Activity(userName, exercise_name, workoutDate, amountOfSets, amountOfRepeatition, weight,
 				duration, type);
 		return activity;
 
 	}
-	
-	private static String dateToString()
-	{
+
+	private static String dateToString() {
 		LocalDate date = LocalDate.now();
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		
+
 		return dateFormat.format(date).toString();
 	}
 

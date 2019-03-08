@@ -8,17 +8,19 @@
 </head>
 <body>
 <h1>Add Anaerobic activity</h1>
-<p>Activity can be only legs chest or back<p/>
-<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/add">
+<p>Activity can be only abs, back, chest, legs or shoulders<p/>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/addAnaerobic">
 	<table>
 		<tbody>
 			<tr>
 				<td>Exercise Name:</td>
 				<td>
 					<select name="exercise_name">
+						<option>abs</option>
 						<option>back</option>
-						<option>legs</option>
 						<option>chest</option>
+						<option>legs</option>
+						<option>shoulders</option>
 					</select>
 			</tr>
 			
@@ -35,13 +37,6 @@
 			<tr>
 				<td>Weight:</td>
 				<td><input type="text" name="weight" size="50" /></td>
-			</tr>
-
-			<tr>
-				<td>Type:</td>
-				<td>
-					<input type="radio" name="type" value = "anaerobic" />Anaerobic
-				</td>
 			</tr>
 
 			<tr>

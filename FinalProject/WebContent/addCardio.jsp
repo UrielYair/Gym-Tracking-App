@@ -8,19 +8,12 @@
 </head>
 <body>
 <h1>Add Cardio activity</h1>
-<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/add">
+<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/addCardio">
 	<table>
 		<tbody>
 			<tr>
 				<td>Duration:</td>
 				<td><input type="text" name="duration" size="50" /></td>
-			</tr>
-
-			<tr>
-				<td>Type:</td>
-				<td>
-					<input type="radio" name="type" value = "cardio" />Cardio
-				</td>
 			</tr>
 
 			<tr>

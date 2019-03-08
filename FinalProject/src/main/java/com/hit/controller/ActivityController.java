@@ -30,8 +30,16 @@ public class ActivityController {
 		this.inputValidator = new InputValidator();
 	}
 
+	public void addCardio(HttpServletRequest request, HttpServletResponse response, String str) {
+		add(request, response, "Cardio");
+	}
+
+	public void addAnaerobic(HttpServletRequest request, HttpServletResponse response, String str) {
+		add(request, response, "Anaerobic");
+	}
+	
 	// TODO: Done, need to check
-	public void add(HttpServletRequest request, HttpServletResponse response, String str) {
+	private void add(HttpServletRequest request, HttpServletResponse response, String type) {
 
 		/*
 		 * * The method is responsible for getting input parameters and validate them.
@@ -56,23 +64,23 @@ public class ActivityController {
 				LOGGER.info("user is logged in");
 				if (inputValidator.activityInputValidation(request)) {
 					// Validation succeeded, adding attempt:
-					activity = utilities.createActivityFromRequest(request);
+					activity = Utilities.createActivityFromRequest(request, type);
 					LOGGER.info("Input is valid, going to add");
 
 					if (hibernateGymDAO.addActivity(activity)) {
 						LOGGER.info("Activity has been added");
-						//printWriter.println("added successfully");
+						// printWriter.println("added successfully");
 						response.sendRedirect(request.getContextPath() + "/activities.jsp");
 					} else {
 						LOGGER.info("Activity already exist");
-						//printWriter.println("activity already exist");
+						// printWriter.println("activity already exist");
 						response.sendRedirect(request.getContextPath() + "/activities.jsp");
 					}
 
 				} else {
 					// Validation fails:
 					LOGGER.info("Activity is not valid");
-					//printWriter.println("activity is not valid");
+					// printWriter.println("activity is not valid");
 					response.sendRedirect(request.getContextPath() + "/addActivities.jsp");
 				}
 
@@ -101,7 +109,7 @@ public class ActivityController {
 		LOGGER.info("Trying to update username");
 
 		Activity activity = null;
-		
+
 		try {
 			printWriter = response.getWriter();
 
@@ -117,43 +125,39 @@ public class ActivityController {
 
 				String activityName = request.getParameter("activityName");
 				String activityDate = request.getParameter("activityDate");
-				
+
 				String userName = (String) session.getAttribute("userName");
-				
-				//the validation should be for the parameters no activity
-				//if (inputValidator.inputValidation(activity)) { // TODO: Verify where activity comes from, maybe
-																// [activity =
-																// utilities.createActivityFromRequest(request);]
-																// needed.
-					
-				if(true) {//for now until the validation function will be made
+
+				// the validation should be for the parameters no activity
+				// if (inputValidator.inputValidation(activity)) { // TODO: Verify where
+				// activity comes from, maybe
+				// [activity =
+				// utilities.createActivityFromRequest(request);]
+				// needed.
+
+				if (true) {// for now until the validation function will be made
 					activity = hibernateGymDAO.getActivity(userName, activityName, activityDate);
-					
-					if(request.getParameter("amount_of_sets") != "")
-					{
+
+					if (request.getParameter("amount_of_sets") != "") {
 						activity.setAmountOfSets(Integer.parseInt(request.getParameter("amount_of_sets")));
 					}
-					
-					if(request.getParameter("repeats") != "")
-					{
+
+					if (request.getParameter("repeats") != "") {
 						activity.setAmountOfRepeatition(Integer.parseInt(request.getParameter("repeats")));
 					}
-					
-					if(request.getParameter("weight") != "")
-					{
+
+					if (request.getParameter("weight") != "") {
 						activity.setWeight(Float.parseFloat(request.getParameter("weight")));
 					}
-				
-					if(request.getParameter("duration") != "")
-					{
+
+					if (request.getParameter("duration") != "") {
 						activity.setDuration(Float.parseFloat(request.getParameter("duration")));
 					}
-					
-					if(request.getParameter("type") != "")
-					{
+
+					if (request.getParameter("type") != "") {
 						activity.setType(request.getParameter("type"));
 					}
-					
+
 					// Validation succeeded, updating attempt:
 					LOGGER.info("Input is valid, trying to update.");
 					if (hibernateGymDAO.updateActivity(activity)) {
@@ -189,12 +193,10 @@ public class ActivityController {
 		 * In case of an error, deleting will be canceled.
 		 */
 
-		
-
 		try {
 
 			printWriter = response.getWriter();
-			
+
 			HttpSession session = request.getSession();
 			if (session.getAttribute("userName") == null) {
 
@@ -207,13 +209,14 @@ public class ActivityController {
 
 				String activityName = request.getParameter("activityName");
 				String activityDate = request.getParameter("activityDate");
-				
+
 				String userName = (String) session.getAttribute("userName");
-				
-				//the validation should be for the parameters no activity
-				//if (inputValidator.inputValidation(activity)) { // TODO: verify where activity comes from.
-				if(true) {//for now until the validation function will be made
-				
+
+				// the validation should be for the parameters no activity
+				// if (inputValidator.inputValidation(activity)) { // TODO: verify where
+				// activity comes from.
+				if (true) {// for now until the validation function will be made
+
 					// Validation succeeded, deleting attempt:
 					LOGGER.info("Input is valid, going to update");
 					if (hibernateGymDAO.deleteActivity(userName, activityName, activityDate)) {
@@ -230,7 +233,7 @@ public class ActivityController {
 					printWriter.println("activity is not valid");
 				}
 			}
-			
+
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} finally {
