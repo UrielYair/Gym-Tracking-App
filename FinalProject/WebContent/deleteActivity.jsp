@@ -15,7 +15,7 @@
 			<tr>
 				<td>Exercise Name:</td>
 				<td>
-					<select name="activityName">
+					<select name="exercise_name">
 						<option>abs</option>
 						<option>back</option>
 						<option>cardio</option>
