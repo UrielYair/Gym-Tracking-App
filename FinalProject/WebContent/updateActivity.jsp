@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Update activity</h1>
-<p>Activity can be only legs chest or back<p/>
+
 	<form method="post" action="http://localhost:8080/FinalProject/controller/Activity/update">
 		<table>
 			<tr>
@@ -48,14 +48,6 @@
 			<tr>
 				<td>Duration:</td>
 				<td><input type="text" name="duration" size="50" /></td>
-			</tr>
-
-			<tr>
-				<td>Type:</td>
-				<td>
-					<input type="radio" name="type" value = "cardio" />Cardio
-					<input type="radio" name="type" value = "anaerobic" />Anaerobic
-				</td>
 			</tr>
 
 			<tr>

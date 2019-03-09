@@ -123,10 +123,21 @@ public class InputValidator {
 		return isValid;
 	}
 
-	// To do
 	public boolean activityUpdateValidation(HttpServletRequest request) {
 		boolean isValid = true;
 
+		if (!activityDeleteValidation(request))// Validation of exercise_name and date
+		{
+			isValid = false;
+		} else if (request.getParameter("activityName").equals("cardio")) {
+			if (!activityInputValidation(request, "Cardio")) {
+				isValid = false;
+			}
+		} else {
+			if (!activityInputValidation(request, "Anaerobic")) {
+				isValid = false;
+			}
+		}
 		return isValid;
 	}
 
@@ -148,14 +159,11 @@ public class InputValidator {
 
 		return isValid;
 	}
-	
-	//to do
-	public boolean dateValidation(String date)
-	{
+
+	// to do
+	public boolean dateValidation(String date) {
 		boolean isValid = true;
-		
-		
-		
+
 		return isValid;
 	}
 }

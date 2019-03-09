@@ -31,7 +31,7 @@ public class ActivityController {
 	public void addAnaerobic(HttpServletRequest request, HttpServletResponse response, String str) {
 		add(request, response, "Anaerobic");
 	}
-	
+
 	// TODO: Done, need to check
 	private void add(HttpServletRequest request, HttpServletResponse response, String type) {
 
@@ -47,7 +47,7 @@ public class ActivityController {
 		try {
 
 			Activity activity = null;
-			
+
 			HttpSession session = request.getSession();
 			if (session.getAttribute("userName") == null) {
 
@@ -66,7 +66,7 @@ public class ActivityController {
 						LOGGER.info("Activity has been added");
 						request.setAttribute("message", "Activity added successfully");
 						request.getRequestDispatcher("/activities.jsp").forward(request, response);
-						
+
 					} else {
 						LOGGER.info("Activity already exist");
 						request.setAttribute("message", "Activity already exist");
@@ -109,7 +109,7 @@ public class ActivityController {
 				LOGGER.info("user is not logged in");
 				request.setAttribute("message", "You are not logged in");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
-			
+
 			} else {
 
 				LOGGER.info("user is logged in");
@@ -122,24 +122,32 @@ public class ActivityController {
 				if (inputValidator.activityUpdateValidation(request)) {
 					activity = hibernateGymDAO.getActivity(userName, activityName, activityDate);
 
-					if (request.getParameter("amount_of_sets") != "") {
-						activity.setAmountOfSets(Integer.parseInt(request.getParameter("amount_of_sets")));
-					}
+					if (activityName.equals("cardio")) {
+						if (request.getParameter("amount_of_sets") != "" || request.getParameter("repeats") != "" || request.getParameter("weight") != "") {
+							request.setAttribute("message", "You cannot change amount of sets, repeats or weight in cardio activity");
+							request.getRequestDispatcher("/updateActivity.jsp").forward(request, response);
+							return;
+						}
+						if (request.getParameter("duration") != "") {
+							activity.setDuration(Float.parseFloat(request.getParameter("duration")));
+						}
+					} else {
+						if (request.getParameter("duration") != "") {
+							request.setAttribute("message", "You cannot change duration in anaerobic activity");
+							request.getRequestDispatcher("/updateActivity.jsp").forward(request, response);
+							return;
+						}
+						if (request.getParameter("amount_of_sets") != "") {
+							activity.setAmountOfSets(Integer.parseInt(request.getParameter("amount_of_sets")));
+						}
 
-					if (request.getParameter("repeats") != "") {
-						activity.setAmountOfRepeatition(Integer.parseInt(request.getParameter("repeats")));
-					}
+						if (request.getParameter("repeats") != "") {
+							activity.setAmountOfRepeatition(Integer.parseInt(request.getParameter("repeats")));
+						}
 
-					if (request.getParameter("weight") != "") {
-						activity.setWeight(Float.parseFloat(request.getParameter("weight")));
-					}
-
-					if (request.getParameter("duration") != "") {
-						activity.setDuration(Float.parseFloat(request.getParameter("duration")));
-					}
-
-					if (request.getParameter("type") != "") {
-						activity.setType(request.getParameter("type"));
+						if (request.getParameter("weight") != "") {
+							activity.setWeight(Float.parseFloat(request.getParameter("weight")));
+						}
 					}
 
 					// Validation succeeded, updating attempt:
@@ -148,7 +156,7 @@ public class ActivityController {
 						LOGGER.info("Activity has been updated");
 						request.setAttribute("message", "Activity has been updated successfully");
 						request.getRequestDispatcher("/activities.jsp").forward(request, response);
-					
+
 					} else {
 						LOGGER.info("Activity cannot be updated");
 						request.setAttribute("message", "Activity cannot be updated");
@@ -204,7 +212,7 @@ public class ActivityController {
 						LOGGER.info("Activity has been deleted");
 						request.setAttribute("message", "Activity deleted successfully");
 						request.getRequestDispatcher("/activities.jsp").forward(request, response);
-					
+
 					} else {
 						LOGGER.info("Activity cannot be deleted");
 						request.setAttribute("message", "Activity cannot be deleted");
@@ -224,7 +232,7 @@ public class ActivityController {
 		}
 	}
 
-	//we don't need it
+	// we don't need it
 	public void get(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
 
 		// TODO: Check the followings:

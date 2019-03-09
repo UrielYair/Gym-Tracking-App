@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Delete activity</h1>
-<p>Activity can be only legs chest or back<p/>
+
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/delete">
 	<table>
 		<tbody>
