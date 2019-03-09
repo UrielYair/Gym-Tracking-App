@@ -16,9 +16,12 @@
 				<td>Exercise Name:</td>
 				<td>
 					<select name="activityName">
+						<option>abs</option>
 						<option>back</option>
-						<option>legs</option>
+						<option>cardio</option>
 						<option>chest</option>
+						<option>legs</option>
+						<option>shoulders</option>
 					</select>
 			</tr>
 		

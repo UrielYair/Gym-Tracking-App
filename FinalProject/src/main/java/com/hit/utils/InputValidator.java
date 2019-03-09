@@ -11,9 +11,8 @@ import com.hit.model.Activity;
 public class InputValidator {
 	private static final Logger LOGGER = Logger.getLogger(InputValidator.class.getSimpleName());
 	private PrintStream printWriter;
-	private final String[] legalAnaerobicExerciseNames = { "abs", "back", "chest", "legs", "shoulders"};
+	private final String[] legalAnaerobicExerciseNames = { "abs", "back", "chest", "legs", "shoulders" };
 
-	
 	// To finish
 	public boolean inputValidation(Activity activity) {
 		boolean isValid = false;
@@ -86,7 +85,7 @@ public class InputValidator {
 				}
 			} else if (type.equals("Anaerobic")) {
 				String exercise_name = request.getParameter("exercise_name");
-				if(!anaerobicExerciseNameValidation(exercise_name)) {
+				if (!anaerobicExerciseNameValidation(exercise_name)) {
 					isValid = false;
 				}
 
@@ -112,9 +111,8 @@ public class InputValidator {
 
 		return isValid;
 	}
-	
-	public boolean anaerobicExerciseNameValidation(String exerciseName)
-	{
+
+	public boolean anaerobicExerciseNameValidation(String exerciseName) {
 		boolean isValid = false;
 
 		for (String name : legalAnaerobicExerciseNames) {
@@ -132,10 +130,32 @@ public class InputValidator {
 		return isValid;
 	}
 
-	// To do
 	public boolean activityDeleteValidation(HttpServletRequest request) {
 		boolean isValid = true;
 
+		String exercise_name = request.getParameter("activityName");
+		String date = request.getParameter("activityDate");
+
+		if (!anaerobicExerciseNameValidation(exercise_name)) {
+			if (!(exercise_name.equals("Cardio"))) {
+				isValid = false;
+			}
+		}
+
+		if (!dateValidation(date)) {
+			isValid = false;
+		}
+
+		return isValid;
+	}
+	
+	//to do
+	public boolean dateValidation(String date)
+	{
+		boolean isValid = true;
+		
+		
+		
 		return isValid;
 	}
 }
