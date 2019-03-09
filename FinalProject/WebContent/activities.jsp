@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<p>${message}</p>
+
 <button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
 <br/>
 <br/>

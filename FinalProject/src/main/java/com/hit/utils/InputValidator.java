@@ -11,7 +11,9 @@ import com.hit.model.Activity;
 public class InputValidator {
 	private static final Logger LOGGER = Logger.getLogger(InputValidator.class.getSimpleName());
 	private PrintStream printWriter;
+	private final String[] legalAnaerobicExerciseNames = { "abs", "back", "chest", "legs", "shoulders"};
 
+	
 	// To finish
 	public boolean inputValidation(Activity activity) {
 		boolean isValid = false;
@@ -63,19 +65,77 @@ public class InputValidator {
 		}
 		return isValid;
 	}
-	
+
 	public boolean buttonValidator(String[] legalButtons, String buttonName) {
-		for(String button : legalButtons) {
-			if(button.equals(buttonName)) {
+		for (String button : legalButtons) {
+			if (button.equals(buttonName)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	public boolean activityInputValidation(HttpServletRequest request, String type) {
+		boolean isValid = true;
+
+		try {
+
+			if (type.equals("Cardio")) {
+				if (request.getParameter("duration") != "") {
+					Float.parseFloat(request.getParameter("duration"));
+				}
+			} else if (type.equals("Anaerobic")) {
+				String exercise_name = request.getParameter("exercise_name");
+				if(!anaerobicExerciseNameValidation(exercise_name)) {
+					isValid = false;
+				}
+
+				if (request.getParameter("amount_of_sets") != "") {
+					Integer.parseInt(request.getParameter("amount_of_sets"));
+				}
+
+				if (request.getParameter("repeats") != "") {
+					Integer.parseInt(request.getParameter("repeats"));
+				}
+
+				if (request.getParameter("weight") != "") {
+					Float.parseFloat(request.getParameter("weight"));
+				}
+			} else {
+				isValid = false;
+			}
+
+		} catch (Exception exception) {
+			LOGGER.info("Wrong input.");
+			isValid = false;
+		}
+
+		return isValid;
+	}
 	
-	// To do
-	public boolean activityInputValidation(HttpServletRequest request){
-		return true;
+	public boolean anaerobicExerciseNameValidation(String exerciseName)
+	{
+		boolean isValid = false;
+
+		for (String name : legalAnaerobicExerciseNames) {
+			if (name.equals(exerciseName)) {
+				isValid = true;
+			}
+		}
+		return isValid;
 	}
 
+	// To do
+	public boolean activityUpdateValidation(HttpServletRequest request) {
+		boolean isValid = true;
+
+		return isValid;
+	}
+
+	// To do
+	public boolean activityDeleteValidation(HttpServletRequest request) {
+		boolean isValid = true;
+
+		return isValid;
+	}
 }

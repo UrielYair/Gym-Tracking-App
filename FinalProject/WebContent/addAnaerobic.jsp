@@ -45,5 +45,8 @@
 		</tbody>
 	</table>
 </form>
+
+<p>${message}</p>
+
 </body>
 </html>

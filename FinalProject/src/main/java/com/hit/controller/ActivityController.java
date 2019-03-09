@@ -17,16 +17,10 @@ import com.hit.utils.Utilities;
 public class ActivityController {
 	private static final Logger LOGGER = Logger.getLogger(ActivityController.class.getSimpleName());
 	private InputValidator inputValidator;
-	private PrintWriter printWriter;
 	private HibernateGymDAO hibernateGymDAO;
-	private Activity activity; // TODO: consider removing. should not be a member of a controller. should be
-								// instantiated separately each time needed.
-	private Utilities utilities;
 
 	public ActivityController() {
-		this.printWriter = null;
 		this.hibernateGymDAO = HibernateGymDAO.getInstance();
-		this.activity = null;
 		this.inputValidator = new InputValidator();
 	}
 
@@ -51,46 +45,43 @@ public class ActivityController {
 		 */
 
 		try {
-			printWriter = response.getWriter();
 
+			Activity activity = null;
+			
 			HttpSession session = request.getSession();
 			if (session.getAttribute("userName") == null) {
 
 				LOGGER.info("user is not logged in");
-				printWriter.println("you are not logged in");
-				response.sendRedirect(request.getContextPath() + "/login.jsp");
+				request.setAttribute("message", "You are not logged in");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
 			} else {
 
 				LOGGER.info("user is logged in");
-				if (inputValidator.activityInputValidation(request)) {
+				if (inputValidator.activityInputValidation(request, type)) {
 					// Validation succeeded, adding attempt:
 					activity = Utilities.createActivityFromRequest(request, type);
 					LOGGER.info("Input is valid, going to add");
 
 					if (hibernateGymDAO.addActivity(activity)) {
 						LOGGER.info("Activity has been added");
-						// printWriter.println("added successfully");
-						response.sendRedirect(request.getContextPath() + "/activities.jsp");
+						request.setAttribute("message", "Activity added successfully");
+						request.getRequestDispatcher("/activities.jsp").forward(request, response);
+						
 					} else {
 						LOGGER.info("Activity already exist");
-						// printWriter.println("activity already exist");
-						response.sendRedirect(request.getContextPath() + "/activities.jsp");
+						request.setAttribute("message", "Activity already exist");
+						request.getRequestDispatcher("/add" + type + ".jsp").forward(request, response);
 					}
 
 				} else {
 					// Validation fails:
 					LOGGER.info("Activity is not valid");
-					// printWriter.println("activity is not valid");
-					response.sendRedirect(request.getContextPath() + "/addActivities.jsp");
+					request.setAttribute("message", "Activity is not valid");
+					request.getRequestDispatcher("/add" + type + ".jsp").forward(request, response);
 				}
-
 			}
-
 		} catch (Exception exception) {
 			exception.printStackTrace();
-		} finally {
-			printWriter.close();
-			activity = null;
 		}
 	}
 
@@ -106,19 +97,19 @@ public class ActivityController {
 		 * In case of an error, updating will be canceled.
 		 */
 
-		LOGGER.info("Trying to update username");
+		LOGGER.info("Trying to update activity");
 
 		Activity activity = null;
 
 		try {
-			printWriter = response.getWriter();
 
 			HttpSession session = request.getSession();
 			if (session.getAttribute("userName") == null) {
 
 				LOGGER.info("user is not logged in");
-				printWriter.println("you are not logged in");
-
+				request.setAttribute("message", "You are not logged in");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
+			
 			} else {
 
 				LOGGER.info("user is logged in");
@@ -128,14 +119,7 @@ public class ActivityController {
 
 				String userName = (String) session.getAttribute("userName");
 
-				// the validation should be for the parameters no activity
-				// if (inputValidator.inputValidation(activity)) { // TODO: Verify where
-				// activity comes from, maybe
-				// [activity =
-				// utilities.createActivityFromRequest(request);]
-				// needed.
-
-				if (true) {// for now until the validation function will be made
+				if (inputValidator.activityUpdateValidation(request)) {
 					activity = hibernateGymDAO.getActivity(userName, activityName, activityDate);
 
 					if (request.getParameter("amount_of_sets") != "") {
@@ -162,23 +146,24 @@ public class ActivityController {
 					LOGGER.info("Input is valid, trying to update.");
 					if (hibernateGymDAO.updateActivity(activity)) {
 						LOGGER.info("Activity has been updated");
-						printWriter.println("added successfully");
+						request.setAttribute("message", "Activity has been updated successfully");
+						request.getRequestDispatcher("/activities.jsp").forward(request, response);
+					
 					} else {
 						LOGGER.info("Activity cannot be updated");
-						printWriter.println("activity cannot be updated");
+						request.setAttribute("message", "Activity cannot be updated");
+						request.getRequestDispatcher("/updateActivity.jsp").forward(request, response);
 					}
 
 				} else {
 					// Validation fails:
 					LOGGER.info("Activity is not valid");
-					printWriter.println("activity is not valid");
+					request.setAttribute("message", "Activity is not valid");
+					request.getRequestDispatcher("/updateActivity.jsp").forward(request, response);
 				}
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
-		} finally {
-			printWriter.close();
-			activity = null;
 		}
 	}
 
@@ -195,13 +180,12 @@ public class ActivityController {
 
 		try {
 
-			printWriter = response.getWriter();
-
 			HttpSession session = request.getSession();
 			if (session.getAttribute("userName") == null) {
 
 				LOGGER.info("user is not logged in");
-				printWriter.println("you are not logged in");
+				request.setAttribute("message", "You are not logged in");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
 
 			} else {
 
@@ -212,37 +196,35 @@ public class ActivityController {
 
 				String userName = (String) session.getAttribute("userName");
 
-				// the validation should be for the parameters no activity
-				// if (inputValidator.inputValidation(activity)) { // TODO: verify where
-				// activity comes from.
-				if (true) {// for now until the validation function will be made
+				if (inputValidator.activityDeleteValidation(request)) {
 
 					// Validation succeeded, deleting attempt:
 					LOGGER.info("Input is valid, going to update");
 					if (hibernateGymDAO.deleteActivity(userName, activityName, activityDate)) {
 						LOGGER.info("Activity has been deleted");
-						printWriter.println("deleted successfully");
+						request.setAttribute("message", "Activity deleted successfully");
+						request.getRequestDispatcher("/activities.jsp").forward(request, response);
+					
 					} else {
 						LOGGER.info("Activity cannot be deleted");
-						printWriter.println("activity cannot be deleted");
+						request.setAttribute("message", "Activity cannot be deleted");
+						request.getRequestDispatcher("/deleteActivity.jsp").forward(request, response);
 					}
 
 				} else {
 					// Validation fails:
 					LOGGER.info("Activity is not valid");
-					printWriter.println("activity is not valid");
+					request.setAttribute("message", "Activity is not valid");
+					request.getRequestDispatcher("/deleteActivity.jsp").forward(request, response);
 				}
 			}
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
-		} finally {
-			printWriter.close();
-			activity = null;
 		}
-
 	}
 
+	//we don't need it
 	public void get(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
 
 		// TODO: Check the followings:

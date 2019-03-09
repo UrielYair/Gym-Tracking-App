@@ -34,8 +34,10 @@ public class NavigationController {
 						LOGGER.info("button was not pressed");
 					}
 				} else {
-					LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
-					// printWriter.println("you are not connected!");
+					LOGGER.info("you are not connected!");
+					httpServletRequest.setAttribute("message", "You are not logged in");
+					httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);
+
 				}
 			} else {
 				if (inputValidator.buttonValidator(legalButtons, buttonValue)) {
@@ -47,8 +49,6 @@ public class NavigationController {
 			}
 		} catch (Exception exception) {
 			LOGGER.fatal("Unknown message");
-		} finally {
-		}
+		} 
 	}
-
 }

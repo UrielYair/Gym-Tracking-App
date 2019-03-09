@@ -1,8 +1,6 @@
 package com.hit.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,13 +12,14 @@ import com.hit.model.User;
 import com.hit.utils.InputValidator;
 
 public class UserController {
-	private static final Logger LOGGER = Logger.getLogger(UserController.class.getSimpleName());
 	/**
 	 * The class will be responsible for receiving information regarding users in
 	 * the system. The class will forward the information to the Model classes which
 	 * handle them by needs.
 	 **/
 
+	private static final Logger LOGGER = Logger.getLogger(UserController.class.getSimpleName());
+	
 	private InputValidator inputValidator;
 
 	public UserController() {
@@ -74,16 +73,12 @@ public class UserController {
 			LOGGER.fatal("Error, unknown Exception!");
 			exception.printStackTrace();
 		}
-
-		finally {
-			
-		}
-
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response, String str) {
 		/**
-		 * Method is used to verify user while trying to login
+		 * Method is used to verify user while trying to login,
+		 * and add userName attribute to the session.
 		 */
 
 		String userName = request.getParameter("username");
@@ -92,7 +87,7 @@ public class UserController {
 
 		try {
 			HttpSession session = request.getSession();
-			session.removeAttribute("message");
+			
 			if (!inputValidator.usernameValidation(userName) || !inputValidator.passwordValidation(password)) {
 				LOGGER.info("Input is not valid");
 				request.setAttribute("message", "Input is not valid");
@@ -114,12 +109,7 @@ public class UserController {
 					} else {
 						LOGGER.info(userName + " entered wrong password.");
 						request.setAttribute("message", "Wrong password, please retry");
-						
 						request.getRequestDispatcher("/login.jsp").forward(request, response);
-						//session.setAttribute("message", "Wrong password, please retry");
-						
-						//response.sendRedirect(request.getContextPath()+"/login.jsp");
-						
 					}
 				}
 
@@ -135,17 +125,17 @@ public class UserController {
 		} catch (Exception exception) {
 			LOGGER.fatal("Error, unknown Exception!");
 			exception.printStackTrace();
-		} finally {
-			
 		}
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response, String str) {
+		/**
+		 * Method is used to clear the session while logout
+		 */
+		
 		HttpSession session = request.getSession();
-		PrintWriter printWriter = null;
 
 		try {
-			printWriter = response.getWriter();
 
 			if (session.getAttribute("userName") != null) { // TODO: implement checking if user connected to the system
 															// here.
@@ -154,8 +144,9 @@ public class UserController {
 				request.setAttribute("message", "Logout successfully");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
-				LOGGER.info("you are not connected!"); // if user is not connected he should not reach logout button
-				printWriter.println("you are not connected!");
+				LOGGER.info("you are not connected!");
+				request.setAttribute("message", "You are not connected");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
 			}
 		}
 
@@ -166,19 +157,13 @@ public class UserController {
 			LOGGER.fatal("Error, unknown Exception!");
 			exception.printStackTrace();
 		}
-
-		finally {
-			printWriter.close();
-		}
 	}
 
 	public void deleteUser(HttpServletRequest request, HttpServletResponse response, String str) {
 
 		HttpSession session = request.getSession();
-		PrintWriter printWriter = null;
 
 		try {
-			printWriter = response.getWriter();
 			if (session.getAttribute("userName") != null) {
 				String userName = (String) session.getAttribute("userName");
 				HibernateGymDAO.getInstance().deleteUser(userName);
@@ -189,7 +174,8 @@ public class UserController {
 
 			} else {
 				LOGGER.info("user is not connected!");
-				printWriter.println("you are not connected!");// if user is not connected he should not reach the user delete button
+				request.setAttribute("message", "You are not connected");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
 			}
 
 		}
@@ -200,11 +186,6 @@ public class UserController {
 		} catch (Exception exception) {
 			LOGGER.fatal("Error, unknown Exception!");
 			exception.printStackTrace();
-		}
-
-		finally {
-			LOGGER.fatal("Going to close writer");
-			printWriter.close();
 		}
 	}
 }

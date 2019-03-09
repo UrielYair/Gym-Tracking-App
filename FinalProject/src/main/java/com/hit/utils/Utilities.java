@@ -1,9 +1,6 @@
 package com.hit.utils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,10 +47,6 @@ public class Utilities {
 		HttpSession session = request.getSession();
 		Activity activity = null;
 
-		// to do: check if user logged in
-		// do validation of the input and if some of the inputs are null
-		//
-
 		String userName = (String) session.getAttribute("userName");
 		String exercise_name = null;
 		String workoutDate = dateToString();
@@ -84,7 +77,7 @@ public class Utilities {
 				duration = Float.parseFloat(request.getParameter("duration"));
 			}
 		}
-		//String type = request.getParameter("type");
+	
 		activity = new Activity(userName, exercise_name, workoutDate, amountOfSets, amountOfRepeatition, weight,
 				duration, type);
 		return activity;
