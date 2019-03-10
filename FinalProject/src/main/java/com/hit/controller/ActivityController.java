@@ -247,41 +247,4 @@ public class ActivityController {
 			exception.printStackTrace();
 		}
 	}
-
-	// we don't need it
-	public void get(HttpServletRequest request, HttpServletResponse response, String str) throws IOException {
-
-		// TODO: Check the followings:
-		// is 'str' variable really needed?
-
-		PrintWriter writer = response.getWriter();
-		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username");
-
-		if (username == null) {
-			// TODO: is it even possible? - maybe should be removed.
-			writer.println("you are not connected!");
-			return;
-		}
-		// check if user connected to the system - TODO: what does that means?
-
-		String activityName = request.getParameter("exercise_name");
-		String activityDate = request.getParameter("exerciseDate");
-
-		// input validation for exercise name:
-		if (!(activityName.equals("legs") || activityName.equals("chest") || activityName.equals("back"))) {
-			writer.println("wrong activity name");
-			return;
-		}
-
-		Activity activity = hibernateGymDAO.getActivity(username, activityName, activityDate); // TODO: check if
-																								// activity name is
-																								// enough for retrieving
-																								// a specific activity
-																								// from the DB.
-		// in other words, check the key of activity table.
-		writer.println(activity.toString());
-
-	}
-
 }

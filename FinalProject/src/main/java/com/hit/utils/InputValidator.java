@@ -1,34 +1,24 @@
 package com.hit.utils;
 
-import java.io.PrintStream;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import com.hit.model.Activity;
-
-import sun.util.resources.LocaleData;
-
 public class InputValidator {
 	private static final Logger LOGGER = Logger.getLogger(InputValidator.class.getSimpleName());
-	private PrintStream printWriter;
 	private final String[] legalAnaerobicExerciseNames = { "abs", "back", "chest", "legs", "shoulders" };
 
-	// To finish
-	public boolean inputValidation(Activity activity) {
-		boolean isValid = false;
-		if (activity != null) {
-			isValid = true;
-		} else {
-			printWriter.println("Wrong input.");
-		}
-
-		return isValid;
-	}
-
-	// To finish
+	/*
+	 * public boolean inputValidation(Activity activity) { boolean isValid = false;
+	 * if (activity != null) { isValid = true; } else {
+	 * printWriter.println("Wrong input."); }
+	 * 
+	 * return isValid; }
+	 */
 	public boolean usernameValidation(String username) {
 		boolean isValid = true;
 		char[] usernameCharArray = null;
@@ -48,7 +38,6 @@ public class InputValidator {
 		return isValid;
 	}
 
-	// To finish
 	public boolean passwordValidation(String password) {
 		boolean isValid = true;
 		char[] passwordCharArray = null;
@@ -110,9 +99,11 @@ public class InputValidator {
 		} catch (Exception exception) {
 			LOGGER.info("Wrong input.");
 			isValid = false;
-		}
+		} finally
 
-		return isValid;
+		{
+			return isValid;
+		}
 	}
 
 	public boolean anaerobicExerciseNameValidation(String exerciseName) {
@@ -163,10 +154,37 @@ public class InputValidator {
 		return isValid;
 	}
 
-	// to do
 	public boolean dateValidation(String date) {
 		boolean isValid = true;
-		//Date.valueOf(date);
+		try {
+			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+			if (date1.getYear() + 1900 <= 2019 || date1.getYear() + 1900 >= 9999) {
+				return false;
+			}
+			if (date1.getMonth() < 0 || date1.getMonth() > 11) {
+				return false;
+			}
+			if (date1.getDate() <= 0 || date1.getDate() >= 31) {
+				return false;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			isValid = false;
+		}
 		return isValid;
+	}
+
+	public boolean longNambersOnly(String number) {
+		boolean isValid = true;
+
+		try {
+			Long.valueOf(number);
+
+		} catch (Exception exception) {
+			LOGGER.info("Wrong input.");
+			isValid = false;
+		} finally {
+			return isValid;
+		}
 	}
 }

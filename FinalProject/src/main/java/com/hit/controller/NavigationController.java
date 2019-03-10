@@ -11,7 +11,7 @@ import com.hit.utils.InputValidator;
 public class NavigationController {
 	private static final Logger LOGGER = Logger.getLogger(NavigationController.class.getSimpleName());
 	private final String[] legalButtons = { "login", "register", "acountManagement", "activities", "addActivity",
-			"deleteActivity", "updateActivity", "addAnaerobic", "addCardio", "home" };
+			"deleteActivity", "updateActivity", "addAnaerobic", "addCardio", "home", "allWorkoutsInPastXDays" };
 
 	private InputValidator inputValidator;
 	private String buttonValue;

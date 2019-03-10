@@ -24,8 +24,16 @@
 <br/>
 <br/>
 <button type="submit" name ="button" value = "updateActivity">Update Exercise</button>
+<br/>
+<p>Reports:</p>
+<br/>
+<button type="submit" name ="button" value = "allWorkoutsInPastXDays">Last X Days Report</button>
 </form>
-
+<br/>
+<br/>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Reports/howManyWorkoutsEveryClientDid">
+<button type="submit">Get all activities of all users</button>
+</form>
 <br/>
 <br/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Reports/getAllMyActivities">

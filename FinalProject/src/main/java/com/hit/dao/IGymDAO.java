@@ -15,6 +15,7 @@ public interface IGymDAO {
 	public Activity getActivity(String userName, String exerciseName, String workoutDate);
 	
 	public List<Activity> getAllUserActivities(String userName);
+	public List<Activity> getAllActivities();
 	
 	public boolean userExist(User user);
 	public boolean addUser(User user);

@@ -7,12 +7,29 @@
 <title>Dates of workouts from the last X Days</title>
 </head>
 <body>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
+<button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
+<button type="submit" name ="button" value = "home">Home</button>
+</form>
+<br/>
+<br/>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Reports/getWorkOutsInPastXDays">
+	<table>
+		<tbody>
+			<tr>
+				<td>last:</td>
+				<td><input type="text" name="amountOfDays" size="3" /></td>
+				<td>days</td>
+			</tr>
 
-<%
-String userName = (String) session.getAttribute("userName");
-int amountOfDays = Integer.parseInt(request.getAttribute("amount").toString());
-com.hit.reports.Reports.getWorkOutsInPastXDays(amountOfDays, userName);
-%>
+			<tr>
+				<td><input type=submit /></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<p>${message}</p>
 
 </body>
 </html>

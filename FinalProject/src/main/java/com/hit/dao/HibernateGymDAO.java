@@ -302,4 +302,33 @@ public class HibernateGymDAO implements IGymDAO {
 		return list;
 	}
 
+	@Override
+	public List<Activity> getAllActivities() {//return activities of all users
+		
+		List<Activity> list = null;
+
+		Session session = (Session) factory.openSession();
+
+		try {
+
+			((org.hibernate.Session) session).beginTransaction();
+
+			Query query = session.createQuery("from Activity");
+			list = (List<Activity>) query.list();
+
+			if (list.isEmpty()) {
+				LOGGER.info("Activities were not founded");
+			} else {
+				LOGGER.info("Activities were founded");
+			}
+
+		} catch (HibernateException hibernateException) {
+			LOGGER.fatal("DB error while activities lookup!");
+		} catch (Exception exception) {
+			LOGGER.fatal("ERROR: " + exception.getMessage());
+		} finally {
+			session.close();
+		}
+		return list;
+	}
 }
