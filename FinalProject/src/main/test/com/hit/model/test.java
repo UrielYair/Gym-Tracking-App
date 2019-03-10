@@ -1,27 +1,71 @@
 package com.hit.model;
 
 import com.hit.dao.HibernateGymDAO;
-import com.hit.exceptions.ActivityDBException;
-import com.hit.exceptions.UserDBException;
+import com.hit.exceptions.DBException;
 
 public class test {
 
-	public static void main(String[] args) throws UserDBException, ActivityDBException 
+	public static void main(String[] args)
 	{
 		HibernateGymDAO dao = HibernateGymDAO.getInstance();
 		
-		dao.addActivity(new Activity(111, "legs", 3, 4));
-		Activity activity = dao.getActivity(111, "legs");
-		System.out.println(activity.toString());
+		//Activity Test
+		dao.addActivity(new Activity("userName", "legs", "29/02/2000",  2,
+				 3,  (float)5.2,  (float)2.0 , "anerobic"));
 		
-		dao.updateActivity(new Activity(111, "legs", 5, 5));
+		Activity activity = null;
+		try {
+			activity = dao.getActivity("userName", "legs", "29/02/2000");
+			System.out.println("addActivity and getActivity works");
+		} catch (DBException e) {
+			System.out.println("addActivity or getActivity don't work");
+			e.printStackTrace();
+		}
 		
-		dao.addUser(new User(1 , "bbba", "1234"));
-		User user = dao.getUser(1);
-		System.out.println(user.toString());
+		dao.updateActivity(new Activity("userName", "legs", "29/02/2000",  4,
+				 4,  (float)4,  (float)4 , "anerobic"));
 		
-		dao.deleteUser(1);
-		dao.deleteActivity(111, "legs");
+		try {
+			activity = dao.getActivity("userName", "legs", "29/02/2000");
+			System.out.println("updateActivity works");
+		} catch (DBException e) {
+			System.out.println("updateActivity doesn't work");
+			e.printStackTrace();
+		}
 		
+		dao.deleteActivity("userName", "legs", "29/02/2000");
+		
+		try {
+			activity = dao.getActivity("userName", "legs", "29/02/2000");
+			System.out.println("deleteActivity doesn't work");
+		} catch (DBException e) {
+			System.out.println("deleteActivity works null value Exception");
+			e.printStackTrace();
+		}
+		
+		//User Test
+		dao.addUser(new User("bbba", "1234"));
+		
+		User user = dao.getUser("bbba");
+		
+		if(user != null) {
+		System.out.println("addUser and getUser works");
+		}
+		else
+		{
+			System.out.println("addUser and getUser don't work");
+		}
+		
+		dao.deleteUser("bbba");
+		
+		user = dao.getUser("bbba");
+		
+		if(user == null) {
+			System.out.println("deleteUser works");
+			}
+			else
+			{
+				System.out.println("deleteUser doesn't work");
+			}
 	}
 }
