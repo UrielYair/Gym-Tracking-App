@@ -7,6 +7,12 @@
 <title>Add Anaerobic activity</title>
 </head>
 <body>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
+<button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
+<button type="submit" name ="button" value = "home">Home</button>
+</form>
+<br/>
+<br/>
 <h1>Add Anaerobic activity</h1>
 <p>Activity can be only abs, back, chest, legs or shoulders<p/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Activity/addAnaerobic">

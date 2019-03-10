@@ -10,7 +10,10 @@
 
 <p>${message}</p>
 
+<form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
 <button type = "button" name = "logoutButton" onclick="window.location.href='http://localhost:8080/FinalProject/controller/User/logout'">Logout</button>
+<button type="submit" name ="button" value = "home">Home</button>
+</form>
 <br/>
 <br/>
 <form method="post" action="http://localhost:8080/FinalProject/controller/Navigation/goTo">
@@ -21,6 +24,12 @@
 <br/>
 <br/>
 <button type="submit" name ="button" value = "updateActivity">Update Exercise</button>
+</form>
+
+<br/>
+<br/>
+<form method="post" action="http://localhost:8080/FinalProject/controller/Reports/getAllMyActivities">
+<button type="submit">Get all my activities</button>
 </form>
 
 </body>
