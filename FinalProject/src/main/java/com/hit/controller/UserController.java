@@ -137,10 +137,9 @@ public class UserController {
 
 		try {
 
-			if (session.getAttribute("userName") != null) { // TODO: implement checking if user connected to the system
-															// here.
+			if (session.getAttribute("userName") != null) { 
 				session.invalidate();
-				LOGGER.info("Logout successfully"); // TODO: fix string.
+				LOGGER.info("Logout successfully"); 
 				request.setAttribute("message", "Logout successfully");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {

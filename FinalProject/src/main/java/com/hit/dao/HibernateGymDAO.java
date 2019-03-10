@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
+import com.hit.exceptions.DBException;
 import com.hit.model.Activity;
 import com.hit.model.User;
 
@@ -22,8 +23,8 @@ public class HibernateGymDAO implements IGymDAO {
 		/**
 		 * private constructor for HiberateGymDAO - Singleton based.
 		 */
-		//
-		LOGGER.info("Creating factory for sessions"); // TODO: delete.
+		
+		LOGGER.info("Creating factory for sessions"); 
 		// Session Factory creation for later operation.
 		factory = new AnnotationConfiguration().configure().buildSessionFactory();
 	}
@@ -33,9 +34,9 @@ public class HibernateGymDAO implements IGymDAO {
 			gymDAO = new HibernateGymDAO();
 			LOGGER.info("HibernateGymDAO instance created.");
 			return gymDAO;
-		} else { // TODO: delete the whole else statement.
-			LOGGER.info("Hibernate instance already created"); // why should we care in every call to get instance to
-																// know if we already have an instance.
+		} else {
+			LOGGER.info("Hibernate instance already created"); 
+																
 			return gymDAO;
 		}
 
@@ -49,22 +50,21 @@ public class HibernateGymDAO implements IGymDAO {
 	public boolean activityExist(Activity activity) {
 		boolean isExist = false;
 
-		if (getInstance().getActivity(activity.getUserName(), activity.getExerciseName(),
-				activity.getWorkoutDate()) != null) {
+		try {
+			getInstance().getActivity(activity.getUserName(), activity.getExerciseName(), activity.getWorkoutDate());
 			isExist = true;
 			LOGGER.info("Activity exist");
-		} else {
+		} catch (DBException e) {
 			LOGGER.info("Activity NOT exist");
+		} finally {
+			return isExist;
 		}
-
-		return isExist;
-
 	}
 
 	@Override
 	public boolean addActivity(Activity activity) {
 		Session session = (Session) factory.openSession();
-		boolean hasAdded = false;
+		boolean wasAdded = false;
 
 		try {
 
@@ -73,10 +73,10 @@ public class HibernateGymDAO implements IGymDAO {
 				((org.hibernate.Session) session).beginTransaction();
 				((org.hibernate.Session) session).save(activity);
 				((org.hibernate.Session) session).getTransaction().commit();
-				LOGGER.info("Activity was added"); // TODO: make it more descriptive.
-				hasAdded = true;
+				LOGGER.info("Activity was added");
+				wasAdded = true;
 			} else {
-				LOGGER.info("Activity was NOT added"); // TODO: check if is it an activity or certain exercise.
+				LOGGER.info("Activity was NOT added");
 			}
 
 		} catch (HibernateException hibernateException) {
@@ -85,9 +85,9 @@ public class HibernateGymDAO implements IGymDAO {
 
 		finally {
 			session.close();
+			return wasAdded;
 		}
 
-		return hasAdded;
 	}
 
 	@Override
@@ -100,24 +100,23 @@ public class HibernateGymDAO implements IGymDAO {
 		try {
 			activity = getActivity(userName, exerciseName, workoutDate);
 
-			if (activity != null) {
-				((org.hibernate.Session) session).beginTransaction();
-				((org.hibernate.Session) session).delete(activity);
-				((org.hibernate.Session) session).getTransaction().commit();
-				LOGGER.info("Activity was deleted"); // TODO: make it more descriptive. which activity was deleted
-														// exactly?
-				wasDeleted = true;
-			}
+			((org.hibernate.Session) session).beginTransaction();
+			((org.hibernate.Session) session).delete(activity);
+			((org.hibernate.Session) session).getTransaction().commit();
+			LOGGER.info("Activity was deleted");
+
+			wasDeleted = true;
 
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("ERROR: DB error while activity deletion command.");
+		} catch (DBException e) {
+			e.printStackTrace();
 		}
 
 		finally {
 			session.close();
+			return wasDeleted;
 		}
-
-		return wasDeleted;
 	}
 
 	@Override
@@ -143,7 +142,7 @@ public class HibernateGymDAO implements IGymDAO {
 	}
 
 	@Override
-	public Activity getActivity(String userName, String exerciseName, String workoutDate) {
+	public Activity getActivity(String userName, String exerciseName, String workoutDate) throws DBException {
 		Session session = (Session) factory.openSession();
 		Activity activity = null;
 
@@ -161,12 +160,11 @@ public class HibernateGymDAO implements IGymDAO {
 				LOGGER.info("Activity was found");
 			} else {
 				LOGGER.info("Activity was NOT found");
+				throw new DBException("Activity was NOT found");
 			}
 
 		} catch (HibernateException hibernateException) {
 			LOGGER.fatal("DB error while activity lookup!");
-		} catch (Exception exception) {
-			LOGGER.fatal("ERROR: " + exception.getMessage());
 		} finally {
 			session.close();
 		}
@@ -192,7 +190,7 @@ public class HibernateGymDAO implements IGymDAO {
 				session.save(user);
 				session.getTransaction().commit();
 				wasAdded = true;
-				LOGGER.info("User was added"); // TODO: make descriptive.
+				LOGGER.info("User was added");
 			}
 		}
 
@@ -221,7 +219,6 @@ public class HibernateGymDAO implements IGymDAO {
 			query.setParameter("n", userName);
 			user = (User) query.uniqueResult();
 
-			// TODO: consider deleting this logging operations.
 			if (user != null) {
 				LOGGER.info("User was found");
 			} else {
@@ -303,8 +300,8 @@ public class HibernateGymDAO implements IGymDAO {
 	}
 
 	@Override
-	public List<Activity> getAllActivities() {//return activities of all users
-		
+	public List<Activity> getAllActivities() {// return activities of all users
+
 		List<Activity> list = null;
 
 		Session session = (Session) factory.openSession();

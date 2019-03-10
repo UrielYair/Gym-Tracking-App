@@ -33,7 +33,7 @@ public class Activity{
 	@Column(name = "duration", precision=2, nullable=true)
 	private Float duration;
 	@Column(name = "exercise_type", length=20, nullable=false)
-	private String type; // TODO: consider changing to enum.
+	private String type;
 	
 	
 	public Activity() {

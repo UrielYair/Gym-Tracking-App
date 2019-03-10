@@ -1,8 +1,5 @@
 package com.hit.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,7 +29,6 @@ public class ActivityController {
 		add(request, response, "Anaerobic");
 	}
 
-	// TODO: Done, need to check
 	private void add(HttpServletRequest request, HttpServletResponse response, String type) {
 
 		/*
@@ -85,7 +81,6 @@ public class ActivityController {
 		}
 	}
 
-	// TODO: Done, need to check
 	public void update(HttpServletRequest request, HttpServletResponse response, String str) {
 
 		/*

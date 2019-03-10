@@ -12,13 +12,6 @@ public class InputValidator {
 	private static final Logger LOGGER = Logger.getLogger(InputValidator.class.getSimpleName());
 	private final String[] legalAnaerobicExerciseNames = { "abs", "back", "chest", "legs", "shoulders" };
 
-	/*
-	 * public boolean inputValidation(Activity activity) { boolean isValid = false;
-	 * if (activity != null) { isValid = true; } else {
-	 * printWriter.println("Wrong input."); }
-	 * 
-	 * return isValid; }
-	 */
 	public boolean usernameValidation(String username) {
 		boolean isValid = true;
 		char[] usernameCharArray = null;

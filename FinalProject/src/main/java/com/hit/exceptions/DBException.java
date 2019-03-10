@@ -1,18 +1,18 @@
 package com.hit.exceptions;
 
-public class UserDBException extends Exception {
+public class DBException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UserDBException(String msg)
+	public DBException(String msg)
 	{
 		super(msg);
 	}
 	
-	public UserDBException(String msg, Throwable throwable)
+	public DBException(String msg, Throwable throwable)
 	{
 		super(msg,throwable);
 	}

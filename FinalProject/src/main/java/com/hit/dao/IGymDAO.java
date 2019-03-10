@@ -2,6 +2,7 @@ package com.hit.dao;
 
 import java.util.List;
 
+import com.hit.exceptions.DBException;
 import com.hit.model.Activity;
 import com.hit.model.User;
 
@@ -12,7 +13,7 @@ public interface IGymDAO {
 	public boolean addActivity(Activity activity);
 	public boolean deleteActivity(String userName, String exerciseName, String workoutDate);
 	public boolean updateActivity(Activity activity);
-	public Activity getActivity(String userName, String exerciseName, String workoutDate);
+	public Activity getActivity(String userName, String exerciseName, String workoutDate) throws DBException;
 	
 	public List<Activity> getAllUserActivities(String userName);
 	public List<Activity> getAllActivities();

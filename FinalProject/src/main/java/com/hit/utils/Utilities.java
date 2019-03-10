@@ -16,33 +16,6 @@ import com.hit.model.User;
 
 public class Utilities {
 
-	public static String getUserNameByID(Integer userIdToFind) {
-		// TODO: implement by querying the Users table in the DataBase.
-		return null;
-	}
-
-	public static User getUserByUserName(String userName) {
-		// TODO: implement.
-		return null;
-	}
-
-	private static User getUserById(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static User getCurrentlyConnectedUser(HttpServletRequest request) {
-		String userId = request.getSession().getAttribute("id").toString();
-		System.out.printf("%s %s: userId = %s", LocalTime.now().toString(), Local.class.getEnclosingMethod().getName(),
-				userId);
-		return getUserById(userId);
-	}
-
-	public static ArrayList<Activity> getSpecificWorkout(Date dayOfWorkoutToBeChanged, String userToUpdate) {
-		// TODO: implement!
-		return null;
-	}
-
 	public static Activity createActivityFromRequest(HttpServletRequest request, String type) {
 		HttpSession session = request.getSession();
 		Activity activity = null;
