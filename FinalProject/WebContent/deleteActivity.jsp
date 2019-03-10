@@ -35,7 +35,9 @@
 				<td>Exercise data (dd/MM/yyyy):</td>
 				<td><input type="text" name="activityDate" size="50" /></td>
 			</tr>
-
+			<tr>
+				<td><input type=submit /></td>
+			</tr>
 		</tbody>
 	</table>
 </form>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.persistence.Table;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,8 +47,11 @@ public class ReportsController {
 				if (listOfActivities.isEmpty()) {
 					printWriter.println("No avtivities");
 				} else {
-					printWriter.println(listOfActivities.toString());
-					//should be printed normaly
+					
+					for(Activity activity: listOfActivities)
+					{
+						printWriter.println(activity.toString());
+					}
 				}
 
 			}

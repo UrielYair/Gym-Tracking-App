@@ -1,12 +1,15 @@
 package com.hit.utils;
 
 import java.io.PrintStream;
+import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
 import com.hit.model.Activity;
+
+import sun.util.resources.LocaleData;
 
 public class InputValidator {
 	private static final Logger LOGGER = Logger.getLogger(InputValidator.class.getSimpleName());
@@ -163,7 +166,7 @@ public class InputValidator {
 	// to do
 	public boolean dateValidation(String date) {
 		boolean isValid = true;
-
+		//Date.valueOf(date);
 		return isValid;
 	}
 }
