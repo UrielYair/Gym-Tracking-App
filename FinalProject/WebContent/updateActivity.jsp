@@ -57,9 +57,7 @@
 			</tr>
 
 			<tr>
-					<td>
-						<input type=submit />
-					</td>
+						<td><input type=submit /></td>
 			</tr>
 				
 			</tbody>

@@ -151,13 +151,13 @@ public class InputValidator {
 		boolean isValid = true;
 		try {
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-			if (date1.getYear() + 1900 <= 2019 || date1.getYear() + 1900 >= 9999) {
+			if ((date1.getYear() + 1900) < 2019 || (date1.getYear() + 1900) > 9999) {
 				return false;
 			}
 			if (date1.getMonth() < 0 || date1.getMonth() > 11) {
 				return false;
 			}
-			if (date1.getDate() <= 0 || date1.getDate() >= 31) {
+			if (date1.getDate() < 1 || date1.getDate() > 31) {
 				return false;
 			}
 		} catch (ParseException e) {
